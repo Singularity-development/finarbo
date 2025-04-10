@@ -1,0 +1,233 @@
+{
+  "portfolio": [
+    {
+      "symbol": "LUNA",
+      "acp": 0.3246,
+      "amount": 6.11704,
+      "broker": "BuenBit",
+      "type": "CRYPTO",
+      "market": "CRYPTO"
+    },
+    {
+      "symbol": "BTC",
+      "acp": 81000,
+      "amount": 0.002844,
+      "broker": "BuenBit",
+      "type": "CRYPTO",
+      "market": "CRYPTO"
+    },
+    {
+      "symbol": "ETH",
+      "acp": 1445.38,
+      "amount": 0.346947,
+      "broker": "BuenBit",
+      "type": "CRYPTO",
+      "market": "CRYPTO"
+    },
+    {
+      "symbol": "DAI",
+      "acp": 0.7,
+      "amount": 152.78,
+      "broker": "BuenBit",
+      "type": "CRYPTO",
+      "market": "CRYPTO"
+    },
+    {
+      "symbol": "ARS",
+      "acp": 1,
+      "amount": 311.73,
+      "broker": "LBO",
+      "type": "CURRENCY"
+    },
+    {
+      "symbol": "U$S",
+      "acp": 1200,
+      "amount": 1266.74,
+      "broker": "LBO",
+      "type": "CURRENCY"
+    },
+    {
+      "symbol": "USD",
+      "acp": 1123,
+      "amount": 326.5,
+      "broker": "LBO",
+      "type": "CURRENCY"
+    },
+    {
+      "symbol": "AL30D",
+      "acp": 60,
+      "amount": 3398,
+      "broker": "LBO",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "BPC7D",
+      "acp": 87,
+      "amount": 1501,
+      "broker": "LBO",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "BPD7D",
+      "acp": 81,
+      "amount": 304,
+      "broker": "LBO",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "GD30D",
+      "acp": 62,
+      "amount": 2,
+      "broker": "LBO",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "GD35D",
+      "acp": 61,
+      "amount": 1,
+      "broker": "LBO",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "GD38D",
+      "acp": 58,
+      "amount": 1125,
+      "broker": "LBO",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "AMD",
+      "acp": 22103.12,
+      "amount": 45,
+      "broker": "LBO",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "AMZN",
+      "acp": 1565.19,
+      "amount": 321,
+      "broker": "LBO",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "CVX",
+      "acp": 11172.11,
+      "amount": 35,
+      "broker": "LBO",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "DIA",
+      "acp": 18898.46,
+      "amount": 52,
+      "broker": "LBO",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "MELI",
+      "acp": 21021.16,
+      "amount": 23,
+      "broker": "LBO",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "MSFT",
+      "acp": 11988.65,
+      "amount": 6,
+      "broker": "LBO",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "SPY",
+      "acp": 29790.17,
+      "amount": 27,
+      "broker": "LBO",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "CEPU",
+      "acp": 1414.22,
+      "amount": 176,
+      "broker": "LBO",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "COME",
+      "acp": 140.31,
+      "amount": 8,
+      "broker": "LBO",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "GGAL",
+      "acp": 4319.04,
+      "amount": 6,
+      "broker": "LBO",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "PAMP",
+      "acp": 3651.57,
+      "amount": 159,
+      "broker": "LBO",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "TGNO4",
+      "acp": 4352.32,
+      "amount": 149,
+      "broker": "LBO",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "TGSU2",
+      "acp": 6534.29,
+      "amount": 28,
+      "broker": "LBO",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "YPFD",
+      "acp": 50528.71,
+      "amount": 13,
+      "broker": "LBO",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "MRCAD",
+      "acp": 61,
+      "amount": 1004,
+      "broker": "LBO",
+      "type": "ON",
+      "market": "ARG"
+    },
+    {
+      "symbol": "SBS RETORNO TOTAL",
+      "acp": 372.72,
+      "amount": 2682.95,
+      "broker": "LBO",
+      "type": "OTHER",
+      "market": "ARG"
+    }
+  ]
+}

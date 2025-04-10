@@ -1,0 +1,42 @@
+{
+  "title": "Portfolio Dashboard",
+  "description": "Real-time monitoring of your investments with performance analysis",
+  "actions": {
+    "portfolioAnalysis": "Portfolio Analysis",
+    "addOrder": "Add Order"
+  },
+  "tabs": {
+    "all": "All Markets",
+    "crypto": "Cryptos",
+    "local": "Local Market",
+    "external": "External Market"
+  },
+  "cards": {
+    "portfolio": {
+      "title": "Portfolio Value",
+      "updateDate": "Updated",
+      "exchange": "Exchange"
+    },
+    "result": {
+      "title": "Portfolio Result"
+    },
+    "assets": {
+      "title": "Current Assets",
+      "profit": "Profit",
+      "none": "Stable",
+      "losses": "Losses"
+    }
+  },
+  "attributes": {
+    "type": "Type",
+    "asset": "Asset",
+    "market": "Market",
+    "symbol": "Symbol",
+    "amount": "Amount",
+    "buyPrice": "Average Buy Price",
+    "currentPrice": "Current Price",
+    "performance": "Performance",
+    "total": "Total",
+    "date": "Date"
+  }
+}

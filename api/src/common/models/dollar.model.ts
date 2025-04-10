@@ -1,0 +1,10 @@
+export enum DollarType {
+  BLUE = 'BLUE',
+  OFFICIAL = 'OFFICIAL',
+  STOCK_DOLLAR = 'STOCK_DOLLAR',
+  CRYPTO = 'CRYPTO',
+  CCL = 'CCL',
+  WHOLESALER = 'WHOLESALER',
+  CARD = 'CARD',
+  UNKNOWN = 'UNKNOWN',
+}
