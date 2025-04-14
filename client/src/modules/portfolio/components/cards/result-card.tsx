@@ -23,10 +23,7 @@ const ResultCard = ({
             {t("cards.result.title", { ns: "portfolio" })}
           </div>
           <div className="text-3xl font-bold">
-            {formatPercentage(
-              percentageResult * 100,
-              Number.isInteger(percentageResult) ? 2 : 4
-            )}
+            {formatPercentage(percentageResult * 100, 2)}
           </div>
         </div>
         <div className="flex items-center gap-4 text-sm mt-4">

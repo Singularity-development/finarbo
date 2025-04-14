@@ -1,5 +1,5 @@
 import { useGetPortfolioQuery } from "@/services/apis/portfolio/portfolio.api";
-import AssetTable from "./asset-table";
+import AssetTable from "./components/table/asset-table";
 import { PortfolioHeader } from "./portfolio-header";
 import { PortfolioCurrency } from "@/services/apis/portfolio/portfolio.model";
 

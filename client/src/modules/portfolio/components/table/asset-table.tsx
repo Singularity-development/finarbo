@@ -11,18 +11,17 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatCurrency, formatNumber } from "@/common/lib/number";
-import AssetBadge from "./components/table/asset-badge";
-import AssetName from "./components/table/asset-name";
-import AssetResult from "./components/table/asset-result";
-import AssetMarket from "./components/table/asset-market";
+import AssetBadge from "./asset-badge";
+import AssetName from "./asset-name";
+import AssetResult from "./asset-result";
+import AssetMarket from "./asset-market";
 import { useTranslation } from "react-i18next";
 import { Asset, Portfolio } from "@/services/apis/portfolio/portfolio.model";
 import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ONLY_DATE, ONLY_TIME } from "@/common/constants/date";
-import { PlusCircle, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Market } from "@/common/models/market.model";
+import EmptyState from "./empty-state";
 
 type TAB_TYPE = "all" | "crypto" | "local" | "external";
 
@@ -46,27 +45,6 @@ const SkeletonAssetTable = () => {
       ))}
     </TableRow>
   ));
-};
-
-const EmptyState = () => {
-  return (
-    <Card className="flex flex-col items-center justify-center py-16 px-4 bg-gray-950 border-gray-800 rounded-none">
-      <div className="text-center max-w-md">
-        <Search className="mx-auto h-12 w-12 text-gray-500 mb-4" />
-        <h3 className="text-xl font-medium text-white mb-2">
-          No hay inversiones en tu portafolio
-        </h3>
-        <p className="text-gray-400 mb-6">
-          Comienza a agregar activos a tu portafolio para monitorear su
-          rendimiento en tiempo real.
-        </p>
-        <Button className="bg-blue-600 hover:bg-blue-700">
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Agregar Inversión
-        </Button>
-      </div>
-    </Card>
-  );
 };
 
 const AssetTable = ({

@@ -19,7 +19,7 @@ i18n
     backend: {
       loadPath: "/public/locales/{{lng}}/{{ns}}.json",
     },
-    ns: ["global", "portfolio", "assets"], // Default namespaces
+    ns: ["global", "portfolio", "assets", "paths"], // Default namespaces
     defaultNS: "global",
   });
 

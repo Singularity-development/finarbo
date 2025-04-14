@@ -1,31 +1,20 @@
-import { useState, useEffect } from "react";
-import { Toaster } from "./components/ui/sonner";
-import Portfolio from "./modules/portfolio/portfolio";
-import i18n from "./config/i18n.ts";
+import { Toaster } from "./components/ui/sonner.tsx";
 import Header from "./components/ui/layout/header.tsx";
+import { Outlet } from "react-router-dom";
 
 function RootLayout() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    i18n.on("initialized", () => {
-      setIsLoading(false);
-    });
-  }, []);
-
-  if (isLoading)
-    return (
-      <div className="flex min-h-screen w-full flex-col bg-[#0a0c10]"></div>
-    );
-
   return (
-    <main className="dark flex min-h-screen w-full flex-col bg-[#0a0c10]">
-      <div className="flex flex-col">
+    <>
+      <main className="dark flex min-h-screen w-full flex-col bg-[#0a0c10]">
         <Header />
-        <Portfolio />
-      </div>
-      <Toaster />
-    </main>
+
+        <section className="items-center justify-between py-6 mx-auto container">
+          <Outlet />
+        </section>
+
+        <Toaster />
+      </main>
+    </>
   );
 }
 

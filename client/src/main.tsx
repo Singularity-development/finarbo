@@ -1,18 +1,20 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { I18nextProvider } from "react-i18next";
 import { setupStore } from "./services/config/store.ts";
 import { Provider } from "react-redux";
-import i18n from "./config/i18n.ts";
-import RootLayout from "./root-layout.tsx";
+import { BrowserRouter } from "react-router-dom";
+import App from "./app.tsx";
 import "./config/dayjs.ts";
+import LocaleProvider from "./common/providers/locale-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={setupStore()}>
-      <I18nextProvider i18n={i18n}>
-        <RootLayout />
-      </I18nextProvider>
+      <LocaleProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </LocaleProvider>
     </Provider>
   </StrictMode>
 );
