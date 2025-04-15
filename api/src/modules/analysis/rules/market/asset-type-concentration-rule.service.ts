@@ -77,10 +77,15 @@ export class AssetTypeConcentrationRuleService implements IRule {
     });
 
     if (Object.keys(exceedAssetByType).length === 0) {
-      return new Result(this.getRuleName(), Severity.NONE, {
-        distributedAssetByType,
+      return new Result(
+        this.getRuleName(),
+        Severity.NONE,
+        0,
         maxHoldingPercentage,
-      });
+        {
+          distributedAssetByType,
+        },
+      );
     }
 
     const maxAssetType = Object.entries(exceedAssetByType).reduce(
@@ -95,13 +100,17 @@ export class AssetTypeConcentrationRuleService implements IRule {
 
     const severity = Result.calculateSeverity(score, maxHoldingPercentage);
 
-    return new Result(this.getRuleName(), severity, {
-      distributedAssetByType,
-      exceedAssetByType,
-      maxExceedAssetType: assetType,
-      maxExceedAssetTypePercentage: score,
+    return new Result(
+      this.getRuleName(),
+      severity,
+      score,
       maxHoldingPercentage,
-    });
+      {
+        distributedAssetByType,
+        exceedAssetByType,
+        maxExceedAssetType: assetType,
+      },
+    );
   }
 
   checkIfRuleApply(portfolio: Portfolio): boolean {

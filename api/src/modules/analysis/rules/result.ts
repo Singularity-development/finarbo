@@ -1,11 +1,23 @@
+import { RuleType } from './rule';
+
 export class Result {
-  code: string;
+  code: RuleType;
   severity: Severity;
+  score: number;
+  threshold: number;
   params?: Record<string, any>;
 
-  constructor(code: string, severity: Severity, params?: Record<string, any>) {
+  constructor(
+    code: RuleType,
+    severity: Severity,
+    score: number,
+    threshold: number,
+    params?: Record<string, any>,
+  ) {
     this.code = code;
     this.severity = severity;
+    this.score = score;
+    this.threshold = threshold;
     this.params = params;
   }
 

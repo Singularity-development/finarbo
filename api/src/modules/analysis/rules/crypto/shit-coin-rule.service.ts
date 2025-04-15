@@ -44,15 +44,20 @@ export class ShitCoinRuleService implements IRule {
       });
 
     if (shitCoins.length <= 0) {
-      return new Result(this.getRuleName(), Severity.NONE, {
-        totalInvestedInCryptos,
-        totalInvestedInShitCoins: 0,
-        shitCoinHoldingPercentage: 0,
+      return new Result(
+        this.getRuleName(),
+        Severity.NONE,
+        0,
         maxHoldingPercentage,
-        minCapitalDominance,
-        currency: FiatCurrency.USD,
-        market: Market.CRYPTO,
-      });
+        {
+          totalInvestedInCryptos,
+          totalInvestedInShitCoins: 0,
+          shitCoinHoldingPercentage: 0,
+          minCapitalDominance,
+          currency: FiatCurrency.USD,
+          market: Market.CRYPTO,
+        },
+      );
     }
 
     // Calculate shit coin investment
@@ -79,15 +84,20 @@ export class ShitCoinRuleService implements IRule {
             maxHoldingPercentage,
           );
 
-    return new Result(this.getRuleName(), severity, {
-      totalInvestedInCryptos,
-      totalInvestedInShitCoins,
+    return new Result(
+      this.getRuleName(),
+      severity,
       shitCoinHoldingPercentage,
       maxHoldingPercentage,
-      minCapitalDominance,
-      currency: FiatCurrency.USD,
-      market: Market.CRYPTO,
-    });
+      {
+        totalInvestedInCryptos,
+        totalInvestedInShitCoins,
+        shitCoinHoldingPercentage,
+        minCapitalDominance,
+        currency: FiatCurrency.USD,
+        market: Market.CRYPTO,
+      },
+    );
   }
 
   checkIfRuleApply(portfolio: Portfolio): boolean {

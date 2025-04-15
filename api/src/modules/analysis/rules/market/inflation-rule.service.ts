@@ -42,10 +42,12 @@ export class InflationRuleService implements IRule {
         ? Severity.NONE
         : Result.calculateSeverity(score, maxHoldingPercentage);
 
-    return new Result(this.getRuleName(), severity, {
-      maxExceedAssetTypePercentage: score,
+    return new Result(
+      this.getRuleName(),
+      severity,
+      score,
       maxHoldingPercentage,
-    });
+    );
   }
 
   checkIfRuleApply(portfolio: Portfolio): boolean {

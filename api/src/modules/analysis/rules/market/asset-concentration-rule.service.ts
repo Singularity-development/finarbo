@@ -61,12 +61,17 @@ export class AssetConcentrationRuleService implements IRule {
           )
         : Severity.NONE;
 
-    return new Result(this.getRuleName(), severity, {
-      exceedAssets: exceedAssets.map((x) => x.symbol),
+    return new Result(
+      this.getRuleName(),
+      severity,
+      score,
       maxHoldingPercentageByAsset,
-      totalExceed,
-      currency: total.currency,
-    });
+      {
+        exceedAssets: exceedAssets.map((x) => x.symbol),
+        totalExceed,
+        currency: total.currency,
+      },
+    );
   }
 
   checkIfRuleApply(portfolio: Portfolio): boolean {

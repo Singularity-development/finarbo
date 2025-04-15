@@ -54,15 +54,20 @@ export class AlternativeCryptoRuleService implements IRule {
             maxHoldingPercentage,
           );
 
-    return new Result(this.getRuleName(), severity, {
-      symbol: mainSymbol,
-      [mainSymbol]: mainCryptoInvestment,
-      totalInvestedInCryptos,
+    return new Result(
+      this.getRuleName(),
+      severity,
       altCoinHoldingPercentage,
       maxHoldingPercentage,
-      currency: FiatCurrency.USD,
-      market: Market.CRYPTO,
-    });
+      {
+        symbol: mainSymbol,
+        [mainSymbol]: mainCryptoInvestment,
+        totalInvestedInCryptos,
+        altCoinHoldingPercentage,
+        currency: FiatCurrency.USD,
+        market: Market.CRYPTO,
+      },
+    );
   }
 
   checkIfRuleApply(portfolio: Portfolio): boolean {
