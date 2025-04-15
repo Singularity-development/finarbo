@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders } from "axios";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 
 export const getApiUrl = () => {
-  const coreBaseUrl = import.meta.env.API_URL ?? "http://localhost:3000";
+  const coreBaseUrl = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
   return `${coreBaseUrl}/api/`;
 };
 
