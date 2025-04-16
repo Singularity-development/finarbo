@@ -6,7 +6,7 @@ import { IRule, RuleType } from '../rule';
 import { AssetType } from '@common/models/asset.model';
 
 @Injectable()
-export class InflationRuleService implements IRule {
+export class DevaluationRuleService implements IRule {
   private CONFIG = {
     maxHoldingPercentage: 0.3, // 30%
   };
@@ -55,6 +55,6 @@ export class InflationRuleService implements IRule {
   }
 
   getRuleName(): RuleType {
-    return 'inflation-exposure';
+    return 'devaluation-exposure';
   }
 }

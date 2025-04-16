@@ -18,9 +18,6 @@ i18n
     interpolation: {
       escapeValue: false, // Not needed for React
     },
-    backend: {
-      loadPath: "/public/locales/{{lng}}/{{ns}}.json",
-    },
     ns: ["global", "portfolio", "assets", "paths", "rules"], // Default namespaces
     defaultNS: "global",
   });

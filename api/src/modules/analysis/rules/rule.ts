@@ -9,7 +9,7 @@ export interface IRule {
 
 export type RuleType =
   | 'public-risk'
-  | 'inflation-exposure'
+  | 'devaluation-exposure'
   | 'asset-type-concentration'
   | 'asset-concentration'
   | 'shit-coins'

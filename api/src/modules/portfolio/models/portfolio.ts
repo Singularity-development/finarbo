@@ -80,14 +80,17 @@ export class Portfolio {
     const totalUsd =
       assets
         .map((x) => {
+          const nominalValue = x.getNominalPriceValue();
+
           const lastPrice = convertCurrency(
-            x.getNominalPriceValue(),
+            nominalValue,
             x.total.currency,
             targetCurrency,
             dollarExchange,
           );
 
-          return x.amount * lastPrice;
+          const total = x.amount * lastPrice;
+          return total;
         })
         .reduce((a, b) => (a ?? 0) + (b ?? 0)) ?? 0;
 

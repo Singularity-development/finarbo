@@ -4,11 +4,12 @@ import { useLocation } from "react-router-dom";
 
 export const useDocumentTitle = () => {
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation("paths");
 
   useEffect(() => {
-    document.title = location.pathname
-      ? `Finarbo - ${t(location.pathname, { ns: "paths" })}`
-      : "Finarbo";
-  }, [location.pathname]);
+    if (ready && location.pathname) {
+      const screen = t(location.pathname);
+      document.title = `Finarbo - ${screen}`;
+    }
+  }, [ready, location.pathname, t]);
 };

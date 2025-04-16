@@ -1,0 +1,43 @@
+{
+  "attributes": {
+    "threshold": "Umbral"
+  },
+  "result": {
+    "asset-concentration": {
+      "title": "Concentración de Especies",
+      "description": "Existen especies con gran participación en la cartera.",
+      "resume": "Existe una participación excesiva de uno o pocas espcies en el portafolio, lo que puede aumentar significativamente el riesgo específico. Una cartera diversificada reduce la dependencia de los rendimientos de una sola especie."
+    },
+    "asset-type-concentration": {
+      "title": "Concentración por tipo de Activos",
+      "description": "Existen tipos de activos con gran participación en la cartera.",
+      "resume": "La cartera muestra una alta participación en uno o pocos instrumentos financieros, como acciones locales, CEDEARs o bonos corporativos. Esta concentración incrementa el riesgo no sistemático, ya que el rendimiento global del portafolio queda excesivamente atado al desempeño de esos activos específicos"
+    },
+    "public-risk": {
+      "title": "Riesgo Público",
+      "description": "Concentración de activos públicos",
+      "resume": "El portafolio presenta una exposición significativa a instrumentos de deuda soberana, es decir, títulos emitidos por el Estado. Estos activos están sujetos a riesgos particulares como la restructuración, default o reperfilamiento, especialmente en economías con antecedentes de inestabilidad fiscal."
+    },
+    "devaluation-exposure": {
+      "title": "Riesgo Devaluatorio",
+      "description": "Concentración de activos no indexados al dólar.",
+      "resume": "El portafolio presenta una alta exposición a activos que no están indexados al dólar o que no tienen cobertura frente a una devaluación. Esto implica una vulnerabilidad ante movimientos abruptos del tipo de cambio, especialmente en economías inestables."
+    },
+    "alternative-cryptos": {
+      "title": "Exposición a Altcoins",
+      "description": "Concentración de critomonedas alternativas al Bitcoin.",
+      "resume": "El portafolio posee una alta proporción de criptomonedas alternativas a Bitcoin, conocidas como 'altcoins'. Aunque pueden ofrecer alto potencial de retorno, también presentan mayor volatilidad y riesgo comparadas con BTC o activos tradicionales."
+    },
+    "shit-coins": {
+      "title": "Exposición a Shitcoins",
+      "description": "Concentración de Shitcoins.",
+      "resume": "Se observa una concentración en criptomonedas de baja capitalización, sin respaldo técnico sólido o sin una comunidad activa, comúnmente denominadas 'shitcoins'. Estos activos son extremadamente especulativos y propensos a fuertes caídas de valor."
+    }
+  },
+  "severity": {
+    "HIGHT": "Alto",
+    "MEDIUM": "Medio",
+    "LOW": "Bajo",
+    "NONE": "Ninguno"
+  }
+}

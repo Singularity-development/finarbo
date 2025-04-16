@@ -120,7 +120,7 @@ export class Asset {
       return this._lastPrice.value;
     }
 
-    return this._acp?.value ?? 1;
+    return this._acp?.value ?? 0;
   }
 
   getNominalPriceValue() {

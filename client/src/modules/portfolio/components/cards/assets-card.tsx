@@ -26,11 +26,11 @@ const AssetsCard = ({ assets = [] }: { assets?: Asset[] }) => {
     <Card className="bg-[#131620] border-[#1e2030] text-white">
       <CardContent className="px-6 h-full flex flex-col">
         <div className="flex flex-col gap-2">
-          <div className="text-sm font-medium text-gray-400">
+          <header className="text-sm font-medium text-gray-400">
             {t("cards.assets.title", { ns: "portfolio" })}
-          </div>
-          <div className="text-3xl font-bold">{total}</div>
-          <div className="mt-4 h-2 w-full rounded-full bg-[#1e2030]">
+          </header>
+          <h3 className="text-3xl font-bold">{total}</h3>
+          <figure className="mt-4 h-2 w-full rounded-full bg-[#1e2030]">
             <div className="flex h-full rounded-full">
               <div
                 className="bg-green-500 rounded-l-full"
@@ -45,31 +45,31 @@ const AssetsCard = ({ assets = [] }: { assets?: Asset[] }) => {
                 style={{ width: `${lossesPercentage}%` }}
               ></div>
             </div>
-          </div>
+          </figure>
           {total !== 0 && (
-            <div className="flex text-xs mt-2">
+            <figcaption className="flex text-xs mt-2">
               <div className="flex items-center mr-4">
-                <div className="h-2 w-2 rounded-full bg-green-500 mr-1"></div>
+                <figure className="h-2 w-2 rounded-full bg-green-500 mr-1" />
                 <span className="text-gray-400">
                   {formatPercentage(profitPercentage)}{" "}
                   {t("cards.assets.profit", { ns: "portfolio" })}
                 </span>
               </div>
               <div className="flex items-center mr-4">
-                <div className="h-2 w-2 rounded-full bg-gray-500 mr-1"></div>
+                <figure className="h-2 w-2 rounded-full bg-gray-500 mr-1" />
                 <span className="text-gray-400">
                   {formatPercentage(nonePercentage)}{" "}
                   {t("cards.assets.none", { ns: "portfolio" })}
                 </span>
               </div>
               <div className="flex items-center">
-                <div className="h-2 w-2 rounded-full bg-red-500 mr-1"></div>
+                <figure className="h-2 w-2 rounded-full bg-red-500 mr-1" />
                 <span className="text-gray-400">
                   {formatPercentage(lossesPercentage)}{" "}
                   {t("cards.assets.losses", { ns: "portfolio" })}
                 </span>
               </div>
-            </div>
+            </figcaption>
           )}
         </div>
       </CardContent>

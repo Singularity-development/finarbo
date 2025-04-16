@@ -25,6 +25,9 @@
       "profit": "Profit",
       "none": "Stable",
       "losses": "Losses"
+    },
+    "ruleResult": {
+      "title": "Risk Analysis"
     }
   },
   "attributes": {

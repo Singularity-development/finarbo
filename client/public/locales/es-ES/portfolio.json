@@ -25,6 +25,9 @@
       "profit": "Ganancia",
       "none": "Estable",
       "losses": "Pérdida"
+    },
+    "ruleResult": {
+      "title": "Análisis de Riesgos"
     }
   },
   "attributes": {

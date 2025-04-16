@@ -1,6 +1,7 @@
 import { Toaster } from "./components/ui/sonner.tsx";
 import Header from "./components/ui/layout/header.tsx";
 import { Outlet } from "react-router-dom";
+import "keen-slider/keen-slider.min.css";
 
 function RootLayout() {
   return (
