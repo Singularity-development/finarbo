@@ -1,0 +1,14 @@
+{
+  "CRYPTO": "Crypto",
+  "STOCK": "Stock",
+  "BOND": "Bond",
+  "LETTER": "Letter",
+  "ON": "ONs",
+  "CEDEAR": "Cedear",
+  "ADR": "ADR",
+  "ETF": "ETF",
+  "ETV": "ETV",
+  "ETN": "ETN",
+  "CURRENCY": "Currency",
+  "OTHER": "Other"
+}

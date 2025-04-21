@@ -1,0 +1,42 @@
+{
+  "title": "Portfolio Dashboard",
+  "description": "Monitoreo en tiempo real de tus inversiones con análisis de rendimiento",
+  "actions": {
+    "portfolioAnalysis": "Análisis de Portfolio",
+    "addOrder": "Agregar Boleto"
+  },
+  "tabs": {
+    "all": "Todos los Mercado",
+    "crypto": "Cryptos",
+    "local": "Mercado local",
+    "external": "Mercado exterior"
+  },
+  "cards": {
+    "portfolio": {
+      "title": "Valor del Portfolio",
+      "updateDate": "Actualizado",
+      "exchange": "Cotización dolár"
+    },
+    "result": {
+      "title": "Rendimiento del Portafolio"
+    },
+    "assets": {
+      "title": "Activos Actuales",
+      "profit": "Ganancia",
+      "none": "Estable",
+      "losses": "Pérdida"
+    }
+  },
+  "attributes": {
+    "type": "Tipo",
+    "asset": "Activo",
+    "market": "Mercado",
+    "symbol": "Símbolo",
+    "amount": "Cantidad",
+    "buyPrice": "Precio Promedio Compra",
+    "currentPrice": "Precio Actual",
+    "performance": "Rendimiento",
+    "total": "Total",
+    "date": "Fecha"
+  }
+}
