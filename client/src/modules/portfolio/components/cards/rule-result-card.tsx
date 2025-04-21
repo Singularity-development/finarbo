@@ -17,8 +17,9 @@ import {
 import { ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Slider from "@/components/ui/slider";
+import { useNavigate } from "react-router-dom";
 
-const RULE_ICONS: Record<RuleType, ReactElement> = {
+export const RULE_ICONS: Record<RuleType, ReactElement> = {
   "public-risk": <Landmark className="h-4 w-4" />,
   "devaluation-exposure": <Flame className="h-4 w-4" />,
   "asset-type-concentration": <ChartPie className="h-4 w-4" />,
@@ -33,6 +34,7 @@ const RuleResultCard = ({
   results?: Record<string, RuleResult>;
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const slides = useMemo(() => {
     if (!results) {
@@ -53,6 +55,7 @@ const RuleResultCard = ({
           key={result.code}
           className="px-6 h-full flex flex-col relative overflow-hidden border rounded-lg cursor-pointer transition-colors"
           style={{ borderColor, backgroundColor }}
+          onClick={() => navigate(`/risks`)}
         >
           <header className="text-sm font-medium text-gray-400 mt-6">
             {t("cards.ruleResult.title", { ns: "portfolio" })}

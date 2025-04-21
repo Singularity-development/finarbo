@@ -2,9 +2,9 @@ import { Suspense, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
 import PageLoading from "./components/screens/page-loading";
 import Page404 from "./components/screens/page-404";
-import RootLayout from "./root-Layout";
 import { useDocumentTitle } from "./common/hooks/useDocumentTitle";
 import ROUTES from "./modules/routes";
+import RootLayout from "./layout/root-layout";
 
 const App = () => {
   useDocumentTitle();

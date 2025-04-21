@@ -20,22 +20,23 @@ export class AssetConcentrationRuleService implements IRule {
     const { assets, total, exchange } = portfolio;
 
     // Check rule
-    const exceedAssets = assets.filter((asset) => {
-      const { total: totalAsset } = asset;
+    const exceedAssets =
+      assets.filter((asset) => {
+        const { total: totalAsset } = asset;
 
-      const totalAssetMapped = convertCurrency(
-        totalAsset.value,
-        totalAsset.currency,
-        total.currency,
-        exchange,
-      );
+        const totalAssetMapped = convertCurrency(
+          totalAsset.value,
+          totalAsset.currency,
+          total.currency,
+          exchange,
+        );
 
-      const score = totalAssetMapped / (total.value ?? 1);
+        const score = totalAssetMapped / (total.value ?? 1);
 
-      if (score > maxHoldingPercentageByAsset) {
-        return asset;
-      }
-    });
+        if (score > maxHoldingPercentageByAsset) {
+          return asset;
+        }
+      }) ?? [];
 
     const totalExceed =
       exceedAssets
@@ -47,7 +48,7 @@ export class AssetConcentrationRuleService implements IRule {
             exchange,
           ),
         )
-        .reduce((a, b) => a + b) ?? 0;
+        .reduce((a, b) => a + b, 0) ?? 0;
 
     const totalExceedAvg = totalExceed / exceedAssets.length;
 

@@ -99,6 +99,7 @@ const AssetTable = ({
       <TableRow
         key={`${asset.symbol}`}
         className="border-[#1e2030] hover:bg-[#1a1d2d]"
+        style={{ height: 53 }}
       >
         <TableCell>
           <AssetBadge type={asset.type} />

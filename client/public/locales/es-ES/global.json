@@ -1,3 +1,6 @@
 {
-  "title": "Finarbo"
+  "title": "Finarbo",
+  "actions": {
+    "detail": "Ver detalle"
+  }
 }

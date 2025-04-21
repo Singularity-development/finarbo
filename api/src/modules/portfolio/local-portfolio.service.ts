@@ -16,6 +16,10 @@ export class LocalPortfolioService {
   constructor(private readonly bymaService: BymaService) {}
 
   async mapLocalAssets(assets: InputAssetDto[]): Promise<Asset[]> {
+    if (assets.length <= 0) {
+      return [];
+    }
+
     // Map assets
     const localAssets: Asset[] = assets.map((asset) => this.createAsset(asset));
     const portfolioAssetsBySymbol = toRecord(assets, (x) => x.symbol);

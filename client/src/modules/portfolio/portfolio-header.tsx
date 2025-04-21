@@ -9,7 +9,7 @@ import RuleResultCard from "./components/cards/rule-result-card";
 
 export function PortfolioHeader({ portfolio }: { portfolio?: Portfolio }) {
   const { t } = useTranslation();
-  const { data: RuleResults } = useGetRuleResultsQuery();
+  const { data: ruleResults } = useGetRuleResultsQuery();
 
   return (
     <header>
@@ -40,7 +40,7 @@ export function PortfolioHeader({ portfolio }: { portfolio?: Portfolio }) {
           percentageResult={portfolio?.percentageResult}
         />
         <AssetsCard assets={portfolio?.assets} />
-        <RuleResultCard results={RuleResults} />
+        <RuleResultCard results={ruleResults} />
       </div>
     </header>
   );
