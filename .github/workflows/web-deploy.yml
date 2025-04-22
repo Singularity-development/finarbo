@@ -11,18 +11,8 @@ jobs:
     with:
       vite_api_url: https://api.example.com
 
-  upload-artifact:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./client/dist
-
   deploy:
-    needs: upload-artifact
+    needs: build
     runs-on: ubuntu-latest
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
@@ -40,6 +30,12 @@ jobs:
         working-directory: ./client
 
     steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: ./client/dist
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

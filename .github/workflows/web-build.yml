@@ -33,3 +33,9 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: ${{ inputs.vite_api_url }}
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: ./client/dist
