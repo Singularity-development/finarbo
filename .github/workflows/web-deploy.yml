@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    uses: ./web-build.yml
+    uses: Singularity-development/finarbo/.github/workflows/web-build.yml@main
     with:
       vite_api_url: https://api.example.com
 
