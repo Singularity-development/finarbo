@@ -1,10 +1,10 @@
 import { formatPercentage } from "@/common/lib/number";
-import { RULE_ICONS } from "@/modules/portfolio/components/cards/rule-result-card";
-import { useGetRuleResultsQuery } from "@/services/apis/analysis/analysis.api";
+import { RULE_ICONS } from "@/features/portfolio/components/cards/rule-result-card";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import RiskQuotes from "./risk-quotes";
 import RiskAdvices from "./risk-advices";
+import { useGetRuleResultsQuery } from "@/services/apis/analysis/analysis.api";
 
 const RiskDetail = () => {
   const { t } = useTranslation();

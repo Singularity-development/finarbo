@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import PortfolioCard from "./components/cards/portfolio-card";
 import AssetsCard from "./components/cards/assets-card";
 import { Button } from "@/components/ui/button";
-import { useGetRuleResultsQuery } from "@/services/apis/analysis/analysis.api";
 import RuleResultCard from "./components/cards/rule-result-card";
+import { useGetRuleResultsQuery } from "@/services/apis/analysis/analysis.api";
 
 export function PortfolioHeader({ portfolio }: { portfolio?: Portfolio }) {
   const { t } = useTranslation();

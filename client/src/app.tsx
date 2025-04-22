@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import PageLoading from "./components/screens/page-loading";
 import Page404 from "./components/screens/page-404";
 import { useDocumentTitle } from "./common/hooks/useDocumentTitle";
-import ROUTES from "./modules/routes";
+import ROUTES from "./features/routes";
 import RootLayout from "./layout/root-layout";
 
 const App = () => {
