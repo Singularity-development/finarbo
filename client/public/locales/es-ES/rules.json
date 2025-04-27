@@ -6,33 +6,57 @@
     "asset-concentration": {
       "title": "Concentración de Especies",
       "description": "Existen especies con gran participación en la cartera.",
-      "resume": "Existe una participación excesiva de uno o pocas espcies en el portafolio, lo que puede aumentar significativamente el riesgo específico. Una cartera diversificada reduce la dependencia de los rendimientos de una sola especie.",
+      "resume": "El riesgo de concentración por especie surge cuando uno o mas especies tienen una participación dominante en el portafolio. Esto puede aumentar la exposición a eventos específicos que afecten negativamente su desempeño.",
+      "analysis": "Tenés {{assetsAmount}} especies que representan el {{portfolioPercentage}} de tu cartera. Esta concentración implica que un mal desempeño puntual podría arrastrar negativamente el resultado global de tus inversiones.",
       "quotes": [
         {
           "quote": "Cuanto más dependés de una sola carta, más frágil es tu juego.",
           "author": "Anónimo"
+        },
+        {
+          "quote": "La fortaleza está en la variedad, no en la repetición.",
+          "author": "Maya Angelou"
         }
+      ],
+      "advices": [
+        "Diversificar entre varias especies suele ayudar a reducir la dependencia de un solo rendimiento.",
+        "Si una especie toma demasiado peso en la cartera, tal vez valga la pena revisar su participación.",
+        "Rebalancear cada tanto puede ser útil para mantener una distribución más equilibrada."
       ]
     },
     "asset-type-concentration": {
       "title": "Concentración por tipo de Activos",
       "description": "Existen tipos de activos con gran participación en la cartera.",
-      "resume": "La cartera muestra una alta participación en uno o pocos instrumentos financieros, como acciones locales, CEDEARs o bonos corporativos. Esta concentración incrementa el riesgo no sistemático, ya que el rendimiento global del portafolio queda excesivamente atado al desempeño de esos activos específicos",
+      "resume": "El riesgo de concentración por tipo de activo aparece cuando la mayor parte del portafolio se encuentra en una o pocas clases de instrumentos, como acciones, bonos o CEDEARs. Esto reduce la diversificación y puede amplificar el impacto de movimientos adversos en ese tipo de activo.",
+      "analysis": "Con un {{value}} de tu cartera concentrado en un mismo tipo de activo, el impacto de un evento adverso puede amplificarse y afectar fuertemente tu rendimiento.",
       "quotes": [
         {
           "quote": "La fortaleza está en la variedad, no en la repetición.",
           "author": "Maya Angelou"
+        },
+        {
+          "quote": "Cuanto más dependés de una sola carta, más frágil es tu juego.",
+          "author": "Anónimo"
         }
+      ],
+      "advices": [
+        "Alternar entre distintos tipos de instrumentos puede aportar distintos niveles de riesgo y retorno.",
+        "Una cartera variada puede responder mejor a cambios en el entorno económico."
       ]
     },
     "public-risk": {
       "title": "Riesgo Público",
       "description": "Concentración de activos públicos",
-      "resume": "El portafolio presenta una exposición significativa a instrumentos de deuda soberana, es decir, títulos emitidos por el Estado. Estos activos están sujetos a riesgos particulares como la restructuración, default o reperfilamiento, especialmente en economías con antecedentes de inestabilidad fiscal.",
+      "resume": "El riesgo público se manifiesta cuando existe una exposición significativa a instrumentos de deuda soberana. Estos activos están sujetos a eventos como restructuraciones, defaults o reperfilamientos, especialmente en contextos de inestabilidad fiscal o incertidumbre política.",
+      "analysis": "Con un {{value}} de tu cartera en títulos públicos, estás expuesto a decisiones fiscales que podrían afectar el valor de tus inversiones.",
       "quotes": [
         {
           "quote": "Cuando el Estado es dueño de la deuda, sos dueño del problema.",
           "author": "Javier Milei"
+        },
+        {
+          "quote": "La deuda soberana no es solo una promesa, sino una cuestión de confianza en la estabilidad política y económica de un país",
+          "author": "Anónimo"
         }
       ],
       "advices": [
@@ -44,32 +68,64 @@
     "devaluation-exposure": {
       "title": "Riesgo Devaluatorio",
       "description": "Concentración de activos no indexados al dólar.",
-      "resume": "El portafolio presenta una alta exposición a activos que no están indexados al dólar o que no tienen cobertura frente a una devaluación. Esto implica una vulnerabilidad ante movimientos abruptos del tipo de cambio, especialmente en economías inestables."
+      "resume": "El riesgo devaluatorio está dado ante una alta exposición a activos que no están indexados al dólar o que no tienen cobertura frente a una devaluación. Esto implica una vulnerabilidad ante movimientos abruptos del tipo de cambio, especialmente en economías inestables.",
+      "analysis": "Con un {{value}} de tu cartera sin cobertura cambiaria, quedás vulnerable ante una devaluación.",
+      "quotes": [
+        {
+          "quote": "Invertir sin tener en cuenta la moneda es como navegar sin brújula.",
+          "author": "Anónimo"
+        },
+        {
+          "quote": "La moneda es la medida del valor, y cuando su valor cae, el mercado se ve afectado en toda su estructura.",
+          "author": "John Maynard Keynes"
+        }
+      ],
+      "advices": [
+        "Podrías considerar incluir activos vinculados al dólar para balancear la exposición cambiaria.",
+        "Incorporar coberturas ante movimientos del tipo de cambio puede sumar estabilidad en ciertos contextos.",
+        "Revisar periódicamente la proporción de activos en pesos podría ayudarte a anticiparte a escenarios de volatilidad."
+      ]
     },
     "alternative-cryptos": {
       "title": "Exposición a Altcoins",
       "description": "Concentración de critomonedas alternativas al Bitcoin.",
-      "resume": "El portafolio posee una alta proporción de criptomonedas alternativas a Bitcoin, conocidas como 'altcoins'. Aunque pueden ofrecer alto potencial de retorno, también presentan mayor volatilidad y riesgo comparadas con BTC o activos tradicionales.",
+      "resume": "El riesgo vinculado a una alta exposición a altcoins está dado por su mayor volatilidad e incertidumbre en comparación con Bitcoin o activos tradicionales. Si bien pueden ofrecer alto potencial de retorno, también implican mayores niveles de riesgo.",
+      "analysis": "Con un {{value}} de tu cartera en altcoins, asumís un nivel de volatilidad superior al de Bitcoin o activos tradicionales.",
       "quotes": [
         {
           "quote": "Las criptomonedas son poco más que un esquema Ponzi descentralizado.",
           "author": "Nouriel Roubini"
+        },
+        {
+          "quote": "El mercado de criptomonedas es un terreno sin reglas claras, donde el inversionista debe estar dispuesto a asumir grandes riesgos.",
+          "author": "amie Dimon"
         }
+      ],
+      "advices": [
+        "Las altcoins pueden tener potencial, aunque suelen ser más volátiles que Bitcoin u otros activos tradicionales.",
+        "Diversificar también dentro del mundo cripto podría ayudar a suavizar los movimientos extremos.",
+        "Revisar la proporción de altcoins podría ser útil si estás buscando mayor estabilidad."
       ]
     },
     "shit-coins": {
       "title": "Exposición a Shitcoins",
       "description": "Concentración de Shitcoins.",
-      "resume": "Se observa una concentración en criptomonedas de baja capitalización, sin respaldo técnico sólido o sin una comunidad activa, comúnmente denominadas 'shitcoins'. Estos activos son extremadamente especulativos y propensos a fuertes caídas de valor.",
+      "resume": "El riesgo asociado a la concentración en criptomonedas de baja capitalización —conocidas como shitcoins — se relaciona con su falta de respaldo técnico, baja liquidez y ausencia de comunidades sólidas. Son activos altamente especulativos y susceptibles a caídas abruptas de valor.",
+      "analysis": "Con un {{value}}  de tu cartera en criptomonedas de baja capitalización, estás altamente expuesto a proyectos sin respaldo técnico ni liquidez.",
       "quotes": [
         {
           "quote": "Solo cuando baja la marea se sabe quién estaba nadando desnudo.",
           "author": "Warren Buffett"
         },
         {
-          "quote": "Es mucho mejor comprar una compañía maravillosa a un precio justo que una compañía justa a un precio maravilloso",
+          "quote": "Es mucho mejor comprar una compañía maravillosa a un precio justo que una compañía justa a un precio maravilloso.",
           "author": "Warren Buffett"
         }
+      ],
+      "advices": [
+        "Las criptomonedas con fundamentos débiles suelen tener comportamientos más impredecibles.",
+        "Tal vez sea conveniente revisar el respaldo y la comunidad de cada proyecto antes de asignarle mucho peso.",
+        "Reservar un espacio más reducido para estas inversiones puede ayudarte a manejar mejor el riesgo."
       ]
     }
   },

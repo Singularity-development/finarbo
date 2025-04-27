@@ -1,3 +1,5 @@
+import { Landmark, Flame, ChartPie, Bitcoin, Coins } from "lucide-react";
+
 export type RuleType =
   | "public-risk"
   | "devaluation-exposure"
@@ -16,8 +18,20 @@ export enum Severity {
 export type RuleResult = {
   code: RuleType;
   severity: Severity;
-  score: number;
-  threshold: number;
+  score?: number;
+  threshold?: number;
+};
+
+export const RULE_ICONS: Record<
+  RuleType,
+  React.ComponentType<{ className?: string }>
+> = {
+  "public-risk": Landmark,
+  "devaluation-exposure": Flame,
+  "asset-type-concentration": ChartPie,
+  "asset-concentration": ChartPie,
+  "alternative-cryptos": Bitcoin,
+  "shit-coins": Coins,
 };
 
 export const getRiskColors = (level: Severity) => {

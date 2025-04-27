@@ -23,8 +23,8 @@ const RiskAdvices = ({ riskResult }: { riskResult: RuleResult }) => {
       <ul>
         {advices.map((advice, i) => {
           return (
-            <li key={i} className="flex gap-2 text-gray-400">
-              <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />{" "}
+            <li key={i} className="flex gap-2 text-white">
+              <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0 text-blue-500" />{" "}
               <span>{advice}</span>
             </li>
           );

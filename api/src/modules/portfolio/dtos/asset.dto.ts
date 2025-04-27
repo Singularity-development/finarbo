@@ -58,4 +58,7 @@ export class AssetDto {
   @Expose()
   @Type(() => BrokerDto)
   brokers: BrokerDto[];
+
+  @Expose()
+  holding: number;
 }

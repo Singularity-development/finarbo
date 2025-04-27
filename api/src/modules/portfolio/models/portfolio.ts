@@ -97,6 +97,16 @@ export class Portfolio {
     const percentageResult = totalUsd > 0 ? result.value / totalUsd : 0;
     const total = new Price(totalUsd, targetCurrency);
 
+    this._assets.forEach((x) => {
+      x.holding =
+        convertCurrency(
+          x.total.value,
+          x.total.currency,
+          total.currency,
+          dollarExchange,
+        ) / total.value;
+    });
+
     return { total, result, percentageResult };
   }
 

@@ -4,6 +4,8 @@ import { PortfolioService } from '@modules/portfolio/portfolio.service';
 import { ResultDto } from './rules/result.dto';
 import { toRecord } from '@common/util/array.util';
 import { Severity } from './rules/result';
+import { RuleType } from './rules/rule';
+import { AssetDto } from '@modules/portfolio/dtos/asset.dto';
 
 @Injectable()
 export class AnalysisService {
@@ -24,5 +26,10 @@ export class AnalysisService {
       ),
       (x) => x.code,
     );
+  }
+
+  async getAssetInvolvedByRule(rule: RuleType): Promise<AssetDto[]> {
+    const portfolioToAnalyze = await this.portfolioService.getPortfolio();
+    return this.rulesService.getAssetInvolvedByRule(portfolioToAnalyze, rule);
   }
 }

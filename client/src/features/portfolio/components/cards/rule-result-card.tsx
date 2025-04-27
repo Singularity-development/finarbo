@@ -1,32 +1,14 @@
 import { formatPercentage } from "@/common/lib/number";
 import {
   getRiskColors,
+  RULE_ICONS,
   RuleResult,
-  RuleType,
 } from "@/services/apis/analysis/rule.model";
-import {
-  ChevronRight,
-  ArrowUp,
-  Landmark,
-  ChartPie,
-  Bitcoin,
-  Banana,
-  ArrowDown,
-  Flame,
-} from "lucide-react";
-import { ReactElement, useMemo } from "react";
+import { ChevronRight, ArrowUp, ArrowDown } from "lucide-react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Slider from "@/components/ui/slider";
 import { useNavigate } from "react-router-dom";
-
-export const RULE_ICONS: Record<RuleType, ReactElement> = {
-  "public-risk": <Landmark className="h-4 w-4" />,
-  "devaluation-exposure": <Flame className="h-4 w-4" />,
-  "asset-type-concentration": <ChartPie className="h-4 w-4" />,
-  "asset-concentration": <ChartPie className="h-4 w-4" />,
-  "alternative-cryptos": <Bitcoin className="h-4 w-4" />,
-  "shit-coins": <Banana className="h-4 w-4" />,
-};
 
 const RuleResultCard = ({
   results,
@@ -43,6 +25,7 @@ const RuleResultCard = ({
 
     return Object.values(results).map((result) => {
       const severity = result.severity;
+      const Icon = RULE_ICONS[result.code];
 
       // colors by severity
       const { color, backgroundColor, focusBackgroundColor } =
@@ -69,7 +52,7 @@ const RuleResultCard = ({
                 backgroundColor: focusBackgroundColor,
               }}
             >
-              {RULE_ICONS[result.code]}
+              {Icon && <Icon className="h-4 w-4" />}
             </div>
             <div className="flex-1">
               <div className="flex justify-between items-center">

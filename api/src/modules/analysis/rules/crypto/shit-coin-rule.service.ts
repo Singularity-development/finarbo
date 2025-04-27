@@ -6,6 +6,7 @@ import { CoinMarketService } from 'src/providers/coin-market-cap/coin-market-cap
 import { FiatCurrency } from '@common/models/fiat-currency.model';
 import { Portfolio } from '@modules/portfolio/models/portfolio';
 import { IRule, RuleType } from '../rule';
+import { Asset } from '@modules/portfolio/models/asset';
 
 @Injectable()
 export class ShitCoinRuleService implements IRule {
@@ -23,7 +24,7 @@ export class ShitCoinRuleService implements IRule {
 
     const { minCapitalDominance, maxHoldingPercentage } = this.CONFIG;
 
-    const cryptos = portfolio.assets.filter((x) => x.market === Market.CRYPTO);
+    const cryptos = this.getCryptoAssets(portfolio);
 
     // Fetch last prices
     const cryptosPrices = await this.coinMarketService.getCryptoQuotesBySymbol({
@@ -36,14 +37,14 @@ export class ShitCoinRuleService implements IRule {
       .reduce((a, b) => a + b);
 
     // Get shit coins
-    const shitCoins = Object.values(cryptosPrices)
+    const shitCoinPrices = Object.values(cryptosPrices)
       .filter((x) => x.quote)
       .filter((x) => {
         const quote = x.quote?.usd;
         return (quote?.marketCapDominance ?? 0) / 100 < minCapitalDominance;
       });
 
-    if (shitCoins.length <= 0) {
+    if (shitCoinPrices.length <= 0) {
       return new Result(
         this.getRuleName(),
         Severity.NONE,
@@ -61,7 +62,7 @@ export class ShitCoinRuleService implements IRule {
     }
 
     // Calculate shit coin investment
-    const totalInvestedInShitCoins = shitCoins
+    const totalInvestedInShitCoins = shitCoinPrices
       .map((x) => {
         const quote = cryptosPrices[x.symbol].quote;
         const portfolioAsset = cryptos.find((y) => y.symbol === x.symbol);
@@ -100,11 +101,42 @@ export class ShitCoinRuleService implements IRule {
     );
   }
 
+  async getPortfolioAssetsInvolved(portfolio: Portfolio): Promise<Asset[]> {
+    if (!this.checkIfRuleApply(portfolio)) {
+      return [];
+    }
+
+    const { minCapitalDominance } = this.CONFIG;
+
+    const cryptos = this.getCryptoAssets(portfolio);
+
+    // Fetch last prices
+    const cryptosPrices = await this.coinMarketService.getCryptoQuotesBySymbol({
+      symbol: cryptos.map((x) => x.symbol).join(','),
+    });
+
+    // Get shit coins
+    const shitCoinPrices = Object.values(cryptosPrices)
+      .filter((x) => x.quote)
+      .filter((x) => {
+        const quote = x.quote?.usd;
+        return (quote?.marketCapDominance ?? 0) / 100 < minCapitalDominance;
+      });
+
+    const shitCoinSymbols = shitCoinPrices.map((x) => x.symbol);
+
+    return cryptos.filter((x) => shitCoinSymbols.includes(x.symbol));
+  }
+
   checkIfRuleApply(portfolio: Portfolio): boolean {
     return portfolioHaveCryptos(portfolio);
   }
 
   getRuleName(): RuleType {
     return 'shit-coins';
+  }
+
+  private getCryptoAssets(portfolio: Portfolio): Asset[] {
+    return portfolio.assets.filter((x) => x.market === Market.CRYPTO);
   }
 }
