@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { databaseConfig } from '@common/config/database.config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { databaseConfig } from '@common/config/database.config';
 import { ConfigModule } from '@nestjs/config';
 import { ProvidersModule } from 'src/providers/providers.module';
 import { PortfolioModule } from '@modules/portfolio/portfolio.module';
@@ -18,7 +18,7 @@ import { AuthGuard } from './auth/auth.guard';
         : `.env.${process.env.NODE_ENV}`,
       isGlobal: true,
     }),
-    // TypeOrmModule.forRoot(databaseConfig),
+    TypeOrmModule.forRoot(databaseConfig),
     ProvidersModule,
     PortfolioModule,
     AnalysisModule,

@@ -1,5 +1,4 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { AppService } from './app.service';
 import { DollarApiService } from 'src/providers/dollar-api/dollar-api.service';
 import { ArgDataService } from 'src/providers/argentina-data/arg-data.service';
 import { CoinMarketService } from 'src/providers/coin-market-cap/coin-market-cap.service';
@@ -8,17 +7,11 @@ import { BymaAssetType, BymaService } from 'src/providers/byma/byma.service';
 @Controller()
 export class AppController {
   constructor(
-    private readonly appService: AppService,
     private readonly dollarApiService: DollarApiService,
     private readonly argDataService: ArgDataService,
     private readonly coinMarketService: CoinMarketService,
     private readonly bymaService: BymaService,
   ) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
 
   @Get('dollars')
   async getAllExchangeRate() {

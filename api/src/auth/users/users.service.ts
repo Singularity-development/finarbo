@@ -2,28 +2,39 @@ import { Injectable } from '@nestjs/common';
 import { User } from './user.model';
 import { Role } from '../role/role.model';
 import * as bcrypt from 'bcrypt';
+import { UserSaveDto } from './user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  private readonly users: User[] = [
-    {
-      id: '1',
-      login: 'federicofruiz@hotmail.com',
-      email: 'federicofruiz@hotmail.com',
-      username: 'Federico Ruiz',
-      password: 'test1234',
-      roles: [Role.Admin],
-      emailVerified: true,
-    },
-  ];
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
+  ) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  async findOneByLogin(login: string): Promise<User | null> {
+    return await this.usersRepository.findOne({ where: { login } });
   }
 
-  async saveUser(user: User): Promise<User | undefined> {
-    const hash = await bcrypt.hash(user.password, 10);
+  async saveUser(userData: UserSaveDto): Promise<User | undefined> {
+    const emailAlreadyUsed =
+      (await this.usersRepository.findOne({
+        where: { email: userData.email },
+      })) !== null;
 
-    return this.users.find((user) => user.username === username);
+    if (emailAlreadyUsed) {
+      throw new Error('Email already used');
+    }
+
+    const user = new User();
+    user.login = userData.login;
+    user.email = userData.email;
+    user.username = userData.username;
+    user.passwordHash = await bcrypt.hash(userData.password, 10);
+    user.roles = [Role.User];
+    user.emailVerified = false;
+
+    return await this.usersRepository.save(user);
   }
 }

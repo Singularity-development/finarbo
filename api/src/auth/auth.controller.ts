@@ -5,11 +5,14 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthenticatedRequest, SignInDto } from './auth.model';
 import { Public } from './auth.decorator';
+import { Request as ExpressRequest } from 'express';
+import { UserSaveDto } from './users/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,13 +20,25 @@ export class AuthController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.login, signInDto.password);
+  @Post('signin')
+  signIn(@Body() signInDto: SignInDto, @Req() req: ExpressRequest) {
+    return this.authService.signIn(signInDto.login, signInDto.password, req);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('signup')
+  signUp(@Body() saveDto: UserSaveDto) {
+    return this.authService.signUp(saveDto);
   }
 
   @Get('profile')
   getProfile(@Request() req: AuthenticatedRequest) {
     return req.user;
+  }
+
+  @Post('refresh')
+  refresh(@Body('refresh_token') refreshToken: string) {
+    return this.authService.refreshAccessToken(refreshToken);
   }
 }

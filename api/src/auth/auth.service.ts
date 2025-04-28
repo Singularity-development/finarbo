@@ -1,28 +1,36 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users/users.service';
-import { JwtService } from '@nestjs/jwt';
 import { AuthPayload } from './auth.model';
 import { User } from './users/user.model';
 import * as bcrypt from 'bcrypt';
+import { TokensService } from './token/token.service';
+import { Request } from 'express';
+import { Mapper } from '@common/util/mapper';
+import { UserDto, UserSaveDto } from './users/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService,
+    private tokensService: TokensService,
   ) {}
 
   async signIn(
     login: string,
     password: string,
-  ): Promise<{ access_token: string }> {
-    const user = await this.usersService.findOne(login);
+    req: Request,
+  ): Promise<{ access_token: string; refresh_token: string }> {
+    const user = await this.usersService.findOneByLogin(login);
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
     await this.checkPassword(password, user);
+
+    if (!user.emailVerified) {
+      throw new UnauthorizedException('Email not verified');
+    }
 
     const payload: Partial<AuthPayload> = {
       sub: user.id,
@@ -31,22 +39,38 @@ export class AuthService {
       roles: user.roles,
       emailVerified: user.emailVerified,
     };
+
+    const [access_token, refresh_token] = await Promise.all([
+      await this.tokensService.generateAccessToken(payload),
+      await this.tokensService.generateRefreshToken(user, req, payload),
+    ]);
+
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token,
+      refresh_token,
     };
+  }
+
+  async signUp(userData: UserSaveDto): Promise<UserDto> {
+    const user = await this.usersService.saveUser(userData);
+    return Mapper.mapToDto(user, UserDto) as UserDto;
+  }
+
+  async refreshAccessToken(refreshToken: string) {
+    return await this.tokensService.refreshAccessToken(refreshToken);
   }
 
   private async checkPassword(password?: string, user?: User) {
     if (!password || !user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const hash = await bcrypt.hash(password, 10);
 
-    const isMatch = await bcrypt.compare(user.password, hash);
+    const isMatch = await bcrypt.compare(user.passwordHash, hash);
 
     if (!isMatch) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid credentials');
     }
   }
 }
