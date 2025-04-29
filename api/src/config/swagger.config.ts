@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, OpenAPIObject } from '@nestjs/swagger';
-import projectConfig from '../../../package.json';
+import projectConfig from '../../package.json';
 
 interface ProjectConfig {
   name: string;
