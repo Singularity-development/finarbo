@@ -2,13 +2,13 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RefreshToken } from './token.model';
+import { RefreshToken } from './token.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { AuthPayload } from '../auth.model';
-import { User } from '../users/user.model';
+import { User } from '../users/user.entity';
 import { DevicesService } from '../device/device.service';
 
 @Injectable()

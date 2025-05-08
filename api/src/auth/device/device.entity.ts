@@ -5,7 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { RefreshToken } from '../token/token.model';
+import { RefreshToken } from '../token/token.entity';
 
 @Entity('devices')
 export class Device {

@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { AuthPayload } from './auth.model';
-import { User } from './users/user.model';
+import { User } from './users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { TokensService } from './token/token.service';
 import { Request } from 'express';

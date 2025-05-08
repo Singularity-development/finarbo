@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Device, DeviceType } from './device.model';
-import { RefreshToken } from '../token/token.model';
+import { Device, DeviceType } from './device.entity';
+import { RefreshToken } from '../token/token.entity';
 
 @Injectable()
 export class DevicesService {
