@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProvidersModule } from 'src/providers/providers.module';
 import { PortfolioModule } from '@modules/portfolio/portfolio.module';
 import { AnalysisModule } from '@modules/analysis/analysis.module';
@@ -21,7 +21,17 @@ import dataBaseConfig from '@config/data-base.config';
       load: [dataBaseConfig],
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => dataBaseConfig(),
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const config = configService.get<TypeOrmModuleOptions>('database');
+
+        if (!config) {
+          throw new Error('Missing database config');
+        }
+
+        return { ...config, autoLoadEntities: true };
+      },
     }),
     ProvidersModule,
     PortfolioModule,

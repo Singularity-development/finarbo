@@ -17,7 +17,7 @@ $ npm install
 ### ⚙️ Configure Environment Variables
 
 1. Copy the `.env.example` file from the [api](../api/) folder.
-2. Rename it to `.env.local`.
+2. Rename it to `.env`.
 3. Fill in all **required** variables.
 
 ## 🚀 Run the Project

@@ -2,18 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { RefreshToken } from '../token/token.entity';
+import { User } from '../users/user.entity';
 
 @Entity('devices')
 export class Device {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => RefreshToken, { onDelete: 'CASCADE' })
-  refreshToken: RefreshToken;
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  user: User;
 
   @Column({ nullable: true })
   deviceType: DeviceType;

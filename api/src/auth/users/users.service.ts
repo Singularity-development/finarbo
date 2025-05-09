@@ -28,7 +28,7 @@ export class UsersService {
     }
 
     const user = new User();
-    user.login = userData.login;
+    user.login = userData.email;
     user.email = userData.email;
     user.username = userData.username;
     user.passwordHash = await bcrypt.hash(userData.password, 10);

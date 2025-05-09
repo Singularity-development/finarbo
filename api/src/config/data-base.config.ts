@@ -1,19 +1,20 @@
+import { registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 const dataBaseConfig = (): TypeOrmModuleOptions => {
-  if (!process.env.DB_URL) {
-    throw new Error('Missing Database URL in environment variables');
+  if (!process.env.DB_USERNAME || !process.env.DB_PASSWORD) {
+    throw new Error('Missing Database credentails in environment variables');
   }
 
   return {
     type: 'postgres',
-    url: process.env.DB_URL,
+    host: process.env.DB_HOST ?? 'localhost',
+    port: process.env.DB_PORT ? +process.env.DB_PORT : 5432,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME ?? 'finarbo_database',
     synchronize: process.env.DB_SYNC ? process.env.DB_SYNC === 'true' : false,
-    entities: ['src/**/*.entity{.ts,.js}'],
-    migrations: ['src/data/migrations/*{.ts,.js}'],
-    migrationsTableName: '_migrations',
-    migrationsRun: true,
   };
 };
 
-export default dataBaseConfig;
+export default registerAs('database', dataBaseConfig);

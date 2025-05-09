@@ -9,10 +9,11 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthenticatedRequest, SignInDto } from './auth.model';
+import { AuthenticatedRequest, RefreshTokenDto, SignInDto } from './auth.model';
 import { Public } from './auth.decorator';
 import { Request as ExpressRequest } from 'express';
 import { UserSaveDto } from './users/user.dto';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,7 @@ export class AuthController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
+  @ApiBody({ type: SignInDto })
   @Post('signin')
   signIn(@Body() signInDto: SignInDto, @Req() req: ExpressRequest) {
     return this.authService.signIn(signInDto.login, signInDto.password, req);
@@ -27,6 +29,7 @@ export class AuthController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
+  @ApiBody({ type: UserSaveDto })
   @Post('signup')
   signUp(@Body() saveDto: UserSaveDto) {
     return this.authService.signUp(saveDto);
@@ -37,8 +40,10 @@ export class AuthController {
     return req.user;
   }
 
+  @Public()
+  @ApiBody({ type: RefreshTokenDto })
   @Post('refresh')
-  refresh(@Body('refresh_token') refreshToken: string) {
-    return this.authService.refreshAccessToken(refreshToken);
+  refresh(@Body() refreshToken: RefreshTokenDto) {
+    return this.authService.refreshAccessToken(refreshToken.refreshToken);
   }
 }

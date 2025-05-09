@@ -28,7 +28,7 @@ export class TokensService {
           secret: this.configService.get('JWT_REFRESH_SECRET'),
         });
 
-      const existingToken = await this.getRefreshToken(refreshToken);
+      const existingToken = await this.getLastRefreshTokenByUser(payload.sub);
 
       if (!existingToken) {
         throw new UnauthorizedException('Invalid refresh token');
@@ -42,11 +42,26 @@ export class TokensService {
         throw new UnauthorizedException('Refresh token expired');
       }
 
+      const isMatch = await bcrypt.compare(
+        refreshToken,
+        existingToken?.tokenHash,
+      );
+
+      if (!isMatch) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
       return {
-        access_token: await this.generateAccessToken(payload),
+        access_token: await this.generateAccessToken({
+          sub: payload.sub,
+          username: payload.username,
+          email: payload.email,
+          roles: payload.roles,
+          emailVerified: payload.emailVerified,
+        }),
       };
-    } catch {
-      throw new UnauthorizedException();
+    } catch (e) {
+      throw new UnauthorizedException(e);
     }
   }
 
@@ -84,14 +99,16 @@ export class TokensService {
     return token;
   }
 
-  async getRefreshToken(token: string) {
-    const tokenHash = await bcrypt.hash(token, 10);
-    return await this.refreshTokenRepository.findOne({ where: { tokenHash } });
+  async getLastRefreshTokenByUser(userId: string) {
+    return await this.refreshTokenRepository.findOne({
+      where: { user: { id: userId } },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   private async saveRefreshToken(user: User, request: Request, token: string) {
-    const existingToken = await this.getRefreshToken(token);
-    if (existingToken) {
+    const existingToken = await this.getLastRefreshTokenByUser(user.id);
+    if (existingToken && !existingToken.revoked) {
       return existingToken;
     }
 
