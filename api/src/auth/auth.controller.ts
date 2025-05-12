@@ -13,9 +13,10 @@ import { AuthenticatedRequest, RefreshTokenDto, SignInDto } from './auth.model';
 import { Public } from './auth.decorator';
 import { Request as ExpressRequest } from 'express';
 import { UserSaveDto } from './users/user.dto';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
-@Controller('auth')
+@ApiTags('Auth')
+@Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -35,15 +36,20 @@ export class AuthController {
     return this.authService.signUp(saveDto);
   }
 
-  @Get('profile')
-  getProfile(@Request() req: AuthenticatedRequest) {
-    return req.user;
+  @Post('logout')
+  logout(@Req() req: AuthenticatedRequest) {
+    return this.authService.logout(req);
   }
 
   @Public()
   @ApiBody({ type: RefreshTokenDto })
   @Post('refresh')
-  refresh(@Body() refreshToken: RefreshTokenDto) {
-    return this.authService.refreshAccessToken(refreshToken.refreshToken);
+  refresh(@Body() refreshToken: RefreshTokenDto, @Req() req: ExpressRequest) {
+    return this.authService.refreshAccessToken(refreshToken.refreshToken, req);
+  }
+
+  @Get('profile')
+  getProfile(@Request() req: AuthenticatedRequest) {
+    return req.user;
   }
 }

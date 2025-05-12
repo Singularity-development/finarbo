@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Device, DeviceType } from './device.entity';
-import { RefreshToken } from '../token/token.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class DevicesService {
@@ -12,9 +12,7 @@ export class DevicesService {
     private readonly deviceRepository: Repository<Device>,
   ) {}
 
-  async saveUserDevice(refreshToken: RefreshToken, req: Request) {
-    const user = refreshToken.user;
-
+  async saveUserDevice(user: User, req: Request): Promise<Device> {
     const device = new Device();
     device.ipAddress = req.ip;
     device.user = user;
@@ -22,10 +20,10 @@ export class DevicesService {
     const userAgent = req.get('User-Agent');
 
     if (userAgent) {
-      const deviceFound = await this.getDeviceByAgent(user.id, userAgent);
+      const deviceFound = await this.getUserDeviceByAgent(user.id, userAgent);
 
       if (deviceFound) {
-        return;
+        return deviceFound;
       }
 
       device.userAgent = userAgent;
@@ -37,7 +35,7 @@ export class DevicesService {
     return await this.deviceRepository.save(device);
   }
 
-  private async getDeviceByAgent(userId: string, userAgent: string) {
+  async getUserDeviceByAgent(userId: string, userAgent: string) {
     return await this.deviceRepository.findOne({
       where: { userAgent, user: { id: userId } },
     });

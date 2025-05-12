@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users/users.service';
-import { AuthPayload } from './auth.model';
+import { AuthenticatedRequest, AuthPayload } from './auth.model';
 import { User } from './users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { TokensService } from './token/token.service';
@@ -23,7 +23,7 @@ export class AuthService {
     const user = await this.usersService.findOneByLogin(login);
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     await this.checkPassword(password, user);
@@ -42,7 +42,7 @@ export class AuthService {
 
     const [access_token, refresh_token] = await Promise.all([
       await this.tokensService.generateAccessToken(payload),
-      await this.tokensService.generateRefreshToken(user, req, payload),
+      await this.tokensService.rotateRefreshToken(user, req, payload),
     ]);
 
     return {
@@ -56,8 +56,13 @@ export class AuthService {
     return Mapper.mapToDto(user, UserDto) as UserDto;
   }
 
-  async refreshAccessToken(refreshToken: string) {
-    return await this.tokensService.refreshAccessToken(refreshToken);
+  async logout(req: AuthenticatedRequest) {
+    const userId = req.user.sub;
+    return this.tokensService.revokeLastRefreshToken(userId, req);
+  }
+
+  async refreshAccessToken(refreshToken: string, request: Request) {
+    return await this.tokensService.refreshAccessToken(refreshToken, request);
   }
 
   private async checkPassword(password?: string, user?: User) {

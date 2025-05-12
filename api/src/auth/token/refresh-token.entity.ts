@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 import { User } from '../users/user.entity';
+import { Device } from '../device/device.entity';
 
 @Entity('refresh_tokens')
 export class RefreshToken {
@@ -17,6 +18,9 @@ export class RefreshToken {
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
+
+  @ManyToOne(() => Device, { onDelete: 'CASCADE' })
+  device: Device;
 
   @Column()
   expiresAt: Date;
