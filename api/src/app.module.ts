@@ -9,6 +9,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import dataBaseConfig from '@config/data-base.config';
 import { RequestContextService } from '@common/middleware/request-context.service';
+import corsConfig from '@config/cors.config';
+import appConfig from '@config/app.config';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { RequestContextService } from '@common/middleware/request-context.servic
         : `.env.${process.env.NODE_ENV}`,
       isGlobal: true,
       expandVariables: true,
-      load: [dataBaseConfig],
+      load: [dataBaseConfig, corsConfig, appConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
