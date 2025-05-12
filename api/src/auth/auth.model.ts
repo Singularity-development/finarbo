@@ -2,6 +2,7 @@ import { Request } from 'express';
 import { Role } from './role/role.model';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEmail } from 'class-validator';
+import { Expose } from 'class-transformer';
 
 export class SignInDto {
   @IsString()
@@ -12,6 +13,16 @@ export class SignInDto {
   @IsString()
   @ApiProperty({ example: 'strongPassword' })
   password: string;
+}
+
+export class TokensResponseDto {
+  @Expose()
+  @ApiProperty()
+  accessToken: string;
+
+  @Expose()
+  @ApiProperty()
+  refreshToken: string;
 }
 
 export class RefreshTokenDto {

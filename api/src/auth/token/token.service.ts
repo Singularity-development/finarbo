@@ -23,10 +23,10 @@ export class TokensService {
     private tokensConfigService: TokensConfigService,
   ) {}
 
-  async refreshAccessToken(refreshToken: string, request: Request) {
+  async refreshAccessToken(plainRefreshToken: string, request: Request) {
     try {
       const payload: AuthPayload =
-        await this.jwtService.verifyAsync<AuthPayload>(refreshToken, {
+        await this.jwtService.verifyAsync<AuthPayload>(plainRefreshToken, {
           secret: this.configService.get('JWT_REFRESH_SECRET'),
         });
 
@@ -61,7 +61,7 @@ export class TokensService {
       }
 
       const isMatch = await bcrypt.compare(
-        refreshToken,
+        plainRefreshToken,
         existingToken?.tokenHash,
       );
 
@@ -77,14 +77,14 @@ export class TokensService {
         emailVerified: payload.emailVerified,
       };
 
-      const [access_token, refresh_token] = await Promise.all([
+      const [accessToken, refreshToken] = await Promise.all([
         this.generateAccessToken(authPayload),
         this.rotateRefreshToken(existingToken.user, request, authPayload),
       ]);
 
       return {
-        access_token,
-        refresh_token,
+        accessToken,
+        refreshToken,
       };
     } catch (e) {
       throw new UnauthorizedException(e);

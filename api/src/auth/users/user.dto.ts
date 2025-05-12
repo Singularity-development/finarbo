@@ -34,28 +34,34 @@ export class UserSaveDto {
 export class UserDto {
   @Expose()
   @IsString()
+  @ApiProperty()
   id: string;
 
   @Expose()
   @IsString()
+  @ApiProperty({ example: 'email@domain.com' })
   login: string;
 
   @Expose()
   @IsString()
   @IsEmail()
+  @ApiProperty({ example: 'email@domain.com' })
   email: string;
 
   @Expose()
   @IsString()
+  @ApiProperty()
   username: string;
 
   @Expose()
   @IsArray()
   @IsOptional()
+  @ApiProperty({ example: [Role.User] })
   roles: Role[];
 
   @Expose()
   @IsBoolean()
   @IsOptional()
+  @ApiProperty()
   emailVerified: boolean;
 }

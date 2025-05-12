@@ -1,7 +1,7 @@
 import { Controller, Get, ParseEnumPipe, Query } from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
 import { PortfolioDto } from './dtos/portfolio.dto';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { PortfolioCurrency, toFiatCurrency } from './models/portfolio';
 
 @Controller('v1/portfolio')
@@ -9,6 +9,7 @@ export class PortfolioController {
   constructor(private readonly portfolioService: PortfolioService) {}
 
   @Get()
+  @ApiOkResponse({ type: PortfolioDto })
   @ApiQuery({
     name: 'portfolioCurrency',
     enum: PortfolioCurrency,

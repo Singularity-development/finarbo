@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProvidersModule } from 'src/providers/providers.module';
@@ -39,7 +38,6 @@ import { RequestContextService } from '@common/middleware/request-context.servic
     AnalysisModule,
     AuthModule,
   ],
-  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,

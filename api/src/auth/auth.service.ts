@@ -1,12 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users/users.service';
-import { AuthenticatedRequest, AuthPayload } from './auth.model';
+import {
+  AuthenticatedRequest,
+  AuthPayload,
+  TokensResponseDto,
+} from './auth.model';
 import { User } from './users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { TokensService } from './token/token.service';
 import { Request } from 'express';
 import { Mapper } from '@common/util/mapper';
 import { UserDto, UserSaveDto } from './users/user.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +24,7 @@ export class AuthService {
     login: string,
     password: string,
     req: Request,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+  ): Promise<TokensResponseDto> {
     const user = await this.usersService.findOneByLogin(login);
 
     if (!user) {
@@ -40,15 +45,15 @@ export class AuthService {
       emailVerified: user.emailVerified,
     };
 
-    const [access_token, refresh_token] = await Promise.all([
+    const [accessToken, refreshToken] = await Promise.all([
       await this.tokensService.generateAccessToken(payload),
       await this.tokensService.rotateRefreshToken(user, req, payload),
     ]);
 
-    return {
-      access_token,
-      refresh_token,
-    };
+    return plainToInstance(TokensResponseDto, {
+      accessToken,
+      refreshToken,
+    });
   }
 
   async signUp(userData: UserSaveDto): Promise<UserDto> {
@@ -62,7 +67,10 @@ export class AuthService {
   }
 
   async refreshAccessToken(refreshToken: string, request: Request) {
-    return await this.tokensService.refreshAccessToken(refreshToken, request);
+    return plainToInstance(
+      TokensResponseDto,
+      await this.tokensService.refreshAccessToken(refreshToken, request),
+    );
   }
 
   private async checkPassword(password?: string, user?: User) {
