@@ -5,6 +5,7 @@ import { RouteProps } from "react-router-dom";
 const Portfolio = lazy(() => import("./portfolio/portfolio"));
 const Risks = lazy(() => import("./risks/risks"));
 const RiskDetail = lazy(() => import("./risks/detail/risk-detail"));
+const Login = lazy(() => import("./auth/login"));
 
 // Route config
 const ROUTES: RouteProps[] = [
@@ -13,4 +14,8 @@ const ROUTES: RouteProps[] = [
   { path: "risks/:risk", element: <RiskDetail /> },
 ];
 
+// Route config
+const AUTH_ROUTES: RouteProps[] = [{ path: "login", element: <Login /> }];
+
+export { AUTH_ROUTES };
 export default ROUTES;

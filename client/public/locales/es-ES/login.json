@@ -1,0 +1,22 @@
+{
+  "title": "Inicia sesión en tu cuenta",
+  "subTitle": "Ingresa tu correo electrónico abajo para iniciar sesión en tu cuenta",
+  "fields": {
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "correo@ejemplo.com"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa tu contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?"
+    }
+  },
+  "login": {
+    "normal": "Iniciar sesión",
+    "alternative": "O continúa con",
+    "google": "Iniciar sesión con Google",
+    "doNotHaveAccount": "¿No tienes una cuenta?"
+  },
+  "signUp": "Regístrate"
+}

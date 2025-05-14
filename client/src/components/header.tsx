@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
+import Logo from "./logo";
 import { LanguageSelector } from "./language-selector";
-import Logo from "../logo";
 
 const Header = () => {
   const { t } = useTranslation();

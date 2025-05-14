@@ -18,7 +18,7 @@ i18n
     interpolation: {
       escapeValue: false, // Not needed for React
     },
-    ns: ["global", "portfolio", "assets", "paths", "rules", "risks"], // Default namespaces
+    ns: ["global", "portfolio", "assets", "paths", "rules", "risks", "login"], // Default namespaces
     defaultNS: "global",
   });
 

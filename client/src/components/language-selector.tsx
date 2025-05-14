@@ -1,6 +1,6 @@
 import i18n from "@/config/i18n/i18n";
-import { Button } from "../button";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 export const LanguageSelector = () => {
   const [language, setLanguage] = useState(i18n.language);
