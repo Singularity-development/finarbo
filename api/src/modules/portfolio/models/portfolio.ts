@@ -80,19 +80,32 @@ export class Portfolio {
     const totalUsd =
       assets
         .map((x) => {
+          const nominalValue = x.getNominalPriceValue();
+
           const lastPrice = convertCurrency(
-            x.getNominalPriceValue(),
+            nominalValue,
             x.total.currency,
             targetCurrency,
             dollarExchange,
           );
 
-          return x.amount * lastPrice;
+          const total = x.amount * lastPrice;
+          return total;
         })
         .reduce((a, b) => (a ?? 0) + (b ?? 0)) ?? 0;
 
     const percentageResult = totalUsd > 0 ? result.value / totalUsd : 0;
     const total = new Price(totalUsd, targetCurrency);
+
+    this._assets.forEach((x) => {
+      x.holding =
+        convertCurrency(
+          x.total.value,
+          x.total.currency,
+          total.currency,
+          dollarExchange,
+        ) / total.value;
+    });
 
     return { total, result, percentageResult };
   }
@@ -102,7 +115,7 @@ export class Portfolio {
     dollarExchange: number,
     targetCurrency: FiatCurrency = FiatCurrency.USD,
   ) {
-    const result =
+    const results =
       assets
         .map((x) => x.result)
         .filter((x) => x !== undefined)
@@ -113,10 +126,13 @@ export class Portfolio {
             targetCurrency,
             dollarExchange,
           ),
-        )
-        .reduce((a, b) => (a ?? 0) + (b ?? 0)) ?? 0;
+        ) ?? [];
 
-    return new Price(result, targetCurrency);
+    const totalResult = results.length
+      ? (results.reduce((a, b) => (a ?? 0) + (b ?? 0)) ?? 0)
+      : 0;
+
+    return new Price(totalResult, targetCurrency);
   }
 
   private calculateByMarket(
@@ -124,35 +140,43 @@ export class Portfolio {
     dollarExchange: number,
     targetCurrency: FiatCurrency = FiatCurrency.USD,
   ): PortfolioMarket {
-    const cryptos = assets
-      .filter((x) => x.market === Market.CRYPTO)
-      .map((x) => {
-        const total = convertCurrency(
-          x.total.value ?? 0,
-          x.total.currency,
-          targetCurrency,
-          dollarExchange,
-        );
+    const cryptos =
+      assets
+        .filter((x) => x.market === Market.CRYPTO)
+        .map((x) => {
+          const total = convertCurrency(
+            x.total.value ?? 0,
+            x.total.currency,
+            targetCurrency,
+            dollarExchange,
+          );
 
-        return new Price(total, targetCurrency);
-      })
-      .reduce((a, b) => new Price(a.value + b.value, targetCurrency));
+          return new Price(total, targetCurrency);
+        }) ?? [];
 
-    const stocks = assets
-      .filter((x) => x.market !== Market.CRYPTO)
-      .map((x) => {
-        const total = convertCurrency(
-          x.total.value ?? 0,
-          x.total.currency,
-          targetCurrency,
-          dollarExchange,
-        );
+    const cryptosTotal = cryptos.length
+      ? cryptos.reduce((a, b) => new Price(a.value + b.value, targetCurrency))
+      : undefined;
 
-        return new Price(total, targetCurrency);
-      })
-      .reduce((a, b) => new Price(a.value + b.value, targetCurrency));
+    const stocks =
+      assets
+        .filter((x) => x.market !== Market.CRYPTO)
+        .map((x) => {
+          const total = convertCurrency(
+            x.total.value ?? 0,
+            x.total.currency,
+            targetCurrency,
+            dollarExchange,
+          );
 
-    return new PortfolioMarket(cryptos, stocks);
+          return new Price(total, targetCurrency);
+        }) ?? [];
+
+    const stocksTotal = stocks.length
+      ? stocks.reduce((a, b) => new Price(a.value + b.value, targetCurrency))
+      : undefined;
+
+    return new PortfolioMarket(cryptosTotal, stocksTotal);
   }
 }
 

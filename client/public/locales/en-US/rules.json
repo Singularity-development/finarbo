@@ -1,0 +1,43 @@
+{
+  "attributes": {
+    "threshold": "Threshold"
+  },
+  "result": {
+    "asset-concentration": {
+      "title": "Species Concentration",
+      "description": "There are species with a high share in the portfolio.",
+      "resume": "There is an excessive participation of one or a few species in the portfolio, which can significantly increase specific risk. A diversified portfolio reduces dependence on the returns of a single species."
+    },
+    "asset-type-concentration": {
+      "title": "Asset Type Concentration",
+      "description": "There are asset types with a high share in the portfolio.",
+      "resume": "The portfolio shows a high share in one or a few financial instruments, such as local stocks, CEDEARs, or corporate bonds. This concentration increases unsystematic risk, as the overall performance of the portfolio becomes overly tied to the performance of those specific assets."
+    },
+    "public-risk": {
+      "title": "Public Risk",
+      "description": "Concentration in public assets",
+      "resume": "The portfolio has significant exposure to sovereign debt instruments, i.e., bonds issued by the State. These assets are subject to particular risks such as restructuring, default, or reprofiling, especially in economies with a history of fiscal instability."
+    },
+    "devaluation-exposure": {
+      "title": "Devaluation Risk",
+      "description": "Concentration in assets not indexed to the dollar.",
+      "resume": "The portfolio has high exposure to assets that are not indexed to the dollar or that lack hedging against devaluation. This implies vulnerability to abrupt exchange rate movements, especially in unstable economies."
+    },
+    "alternative-cryptos": {
+      "title": "Altcoin Exposure",
+      "description": "Concentration in cryptocurrencies other than Bitcoin.",
+      "resume": "The portfolio has a high proportion of cryptocurrencies other than Bitcoin, known as 'altcoins'. While they may offer high return potential, they also present greater volatility and risk compared to BTC or traditional assets."
+    },
+    "shit-coins": {
+      "title": "Shitcoin Exposure",
+      "description": "Concentration in Shitcoins.",
+      "resume": "There is a concentration in low-cap cryptocurrencies without solid technical backing or an active community, commonly referred to as 'shitcoins'. These assets are extremely speculative and prone to sharp declines in value."
+    }
+  },
+  "severity": {
+    "HIGHT": "High",
+    "MEDIUM": "Medium",
+    "LOW": "Low",
+    "NONE": "None"
+  }
+}

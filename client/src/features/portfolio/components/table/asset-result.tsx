@@ -13,11 +13,8 @@ const AssetResult = ({
 }) => {
   if (!performance || !result) {
     return (
-      <div className={`flex flex-col text-gray-500 `}>
-        <div className="flex items-center justify-end gap-1">
-          {formatPercentage(0)}
-        </div>
-        <div className="text-xs text-right">-</div>
+      <div className="flex flex-col text-gray-500">
+        <div className="flex items-center justify-end gap-1 text-right">-</div>
       </div>
     );
   }

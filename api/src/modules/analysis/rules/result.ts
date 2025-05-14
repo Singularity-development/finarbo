@@ -3,15 +3,15 @@ import { RuleType } from './rule';
 export class Result {
   code: RuleType;
   severity: Severity;
-  score: number;
-  threshold: number;
+  score?: number;
+  threshold?: number;
   params?: Record<string, any>;
 
   constructor(
     code: RuleType,
     severity: Severity,
-    score: number,
-    threshold: number,
+    score?: number,
+    threshold?: number,
     params?: Record<string, any>,
   ) {
     this.code = code;

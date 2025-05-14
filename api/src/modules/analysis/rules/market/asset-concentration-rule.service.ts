@@ -3,6 +3,7 @@ import { Result, Severity } from '../result';
 import { convertCurrency } from '@common/models/fiat-currency.model';
 import { Portfolio } from '@modules/portfolio/models/portfolio';
 import { IRule, RuleType } from '../rule';
+import { Asset } from '@modules/portfolio/models/asset';
 
 @Injectable()
 export class AssetConcentrationRuleService implements IRule {
@@ -17,25 +18,10 @@ export class AssetConcentrationRuleService implements IRule {
     }
 
     const { maxHoldingPercentageByAsset } = this.CONFIG;
-    const { assets, total, exchange } = portfolio;
+    const { total, exchange } = portfolio;
 
     // Check rule
-    const exceedAssets = assets.filter((asset) => {
-      const { total: totalAsset } = asset;
-
-      const totalAssetMapped = convertCurrency(
-        totalAsset.value,
-        totalAsset.currency,
-        total.currency,
-        exchange,
-      );
-
-      const score = totalAssetMapped / (total.value ?? 1);
-
-      if (score > maxHoldingPercentageByAsset) {
-        return asset;
-      }
-    });
+    const exceedAssets = this.getPortfolioAssetsInvolved(portfolio);
 
     const totalExceed =
       exceedAssets
@@ -47,7 +33,7 @@ export class AssetConcentrationRuleService implements IRule {
             exchange,
           ),
         )
-        .reduce((a, b) => a + b) ?? 0;
+        .reduce((a, b) => a + b, 0) ?? 0;
 
     const totalExceedAvg = totalExceed / exceedAssets.length;
 
@@ -61,16 +47,38 @@ export class AssetConcentrationRuleService implements IRule {
           )
         : Severity.NONE;
 
-    return new Result(
-      this.getRuleName(),
-      severity,
-      score,
-      maxHoldingPercentageByAsset,
-      {
-        exceedAssets: exceedAssets.map((x) => x.symbol),
-        totalExceed,
-        currency: total.currency,
-      },
+    return new Result(this.getRuleName(), severity, undefined, undefined, {
+      exceedAssets: exceedAssets.map((x) => x.symbol),
+      totalExceed,
+      currency: total.currency,
+    });
+  }
+
+  getPortfolioAssetsInvolved(portfolio: Portfolio): Asset[] {
+    if (!this.checkIfRuleApply(portfolio)) {
+      return [];
+    }
+
+    const { maxHoldingPercentageByAsset } = this.CONFIG;
+    const { assets, total, exchange } = portfolio;
+
+    return (
+      assets.filter((asset) => {
+        const { total: totalAsset } = asset;
+
+        const totalAssetMapped = convertCurrency(
+          totalAsset.value,
+          totalAsset.currency,
+          total.currency,
+          exchange,
+        );
+
+        const score = totalAssetMapped / (total.value ?? 1);
+
+        if (score > maxHoldingPercentageByAsset) {
+          return asset;
+        }
+      }) ?? []
     );
   }
 

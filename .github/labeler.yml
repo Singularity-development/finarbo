@@ -1,0 +1,11 @@
+api:
+  - changed-files:
+    - any-glob-to-any-file: 'api/**'
+
+web:
+  - changed-files:
+    - any-glob-to-any-file: "client/**"
+
+repo-config:
+  - changed-files:
+    - any-glob-to-any-file: ".github/**"

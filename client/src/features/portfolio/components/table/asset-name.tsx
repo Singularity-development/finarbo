@@ -1,12 +1,12 @@
 import { AssetType } from "@/common/models/asset.model";
-import { Banknote, Coins, Landmark, LineChart } from "lucide-react";
+import { Banknote, Coins, Handshake, Landmark, LineChart } from "lucide-react";
 import { ReactElement } from "react";
 
 const ICONS_BY_TYPES: Record<AssetType, ReactElement> = {
   [AssetType.CRYPTO]: <Coins className="h-4 text-yellow-500" />,
 
   [AssetType.BOND]: <Landmark className="h-4 text-purple-500" />,
-  [AssetType.ON]: <Landmark className="h-4 text-purple-500" />,
+  [AssetType.ON]: <Handshake className="h-4 text-purple-500" />,
   [AssetType.LETTER]: <Landmark className="h-4 text-purple-500" />,
 
   [AssetType.CEDEAR]: <LineChart className="h-4 text-blue-500" />,

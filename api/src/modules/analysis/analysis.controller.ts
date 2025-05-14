@@ -1,7 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AnalysisService } from './analysis.service';
 import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { ResultDto } from './rules/result.dto';
+import { RuleType } from './rules/rule';
+import { AssetDto } from '@modules/portfolio/dtos/asset.dto';
 
 @Controller('v1/analyze/rules')
 export class AnalysisController {
@@ -18,7 +20,13 @@ export class AnalysisController {
       },
     },
   })
-  getPortfolio() {
+  analyzePortfolio() {
     return this.analysisService.analyzePortfolio();
+  }
+
+  @Get(':rule/assets')
+  @ApiOkResponse({ type: AssetDto, isArray: true })
+  getPortfolioAssets(@Param('rule') rule: RuleType) {
+    return this.analysisService.getAssetInvolvedByRule(rule);
   }
 }

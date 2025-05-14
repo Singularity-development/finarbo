@@ -6,6 +6,7 @@ import { Result, Severity } from '../result';
 import { CoinMarketService } from 'src/providers/coin-market-cap/coin-market-cap.service';
 import { FiatCurrency } from '@common/models/fiat-currency.model';
 import { Portfolio } from '@modules/portfolio/models/portfolio';
+import { Asset } from '@modules/portfolio/models/asset';
 
 @Injectable()
 export class AlternativeCryptoRuleService implements IRule {
@@ -23,21 +24,32 @@ export class AlternativeCryptoRuleService implements IRule {
 
     const { mainSymbol, maxHoldingPercentage } = this.CONFIG;
 
-    const cryptos = portfolio.assets.filter((x) => x.market === Market.CRYPTO);
+    // Get alternative cryptos
+    const alternativesCryptos = this.getPortfolioAssetsInvolved(portfolio);
+
+    // Get man crypto
+    const mainCrypto = portfolio.assets.find(
+      (x) => x.market === Market.CRYPTO && x.symbol === mainSymbol,
+    );
+
+    const allCryptos = mainCrypto
+      ? [...alternativesCryptos, mainCrypto]
+      : alternativesCryptos;
 
     // Fetch last prices
-    const symbols = new Set(cryptos.map((x) => x.symbol)).add(mainSymbol);
+    const symbols = new Set(alternativesCryptos.map((x) => x.symbol)).add(
+      mainSymbol,
+    );
     const cryptosPrices = await this.coinMarketService.getCryptoQuotesBySymbol({
       symbol: Array.from(symbols).join(','),
     });
 
     // Total invested in crypto
-    const totalInvestedInCryptos = cryptos
+    const totalInvestedInCryptos = allCryptos
       .map((x) => x.total.value)
       .reduce((a, b) => a + b);
 
     // Get main crypto investment
-    const mainCrypto = cryptos.find((x) => x.symbol === mainSymbol);
     const quote = cryptosPrices[mainSymbol].quote;
     const price = quote ? quote.usd.price : (mainCrypto?.acp?.value ?? 0);
     const mainCryptoInvestment = mainCrypto ? mainCrypto.amount * price : 0;
@@ -70,11 +82,27 @@ export class AlternativeCryptoRuleService implements IRule {
     );
   }
 
+  getPortfolioAssetsInvolved(portfolio: Portfolio): Asset[] {
+    if (!this.checkIfRuleApply(portfolio)) {
+      return [];
+    }
+
+    const { mainSymbol } = this.CONFIG;
+
+    return this.getCryptoAssets(portfolio).filter(
+      (x) => x.symbol !== mainSymbol,
+    );
+  }
+
   checkIfRuleApply(portfolio: Portfolio): boolean {
     return portfolioHaveCryptos(portfolio);
   }
 
   getRuleName(): RuleType {
     return 'alternative-cryptos';
+  }
+
+  private getCryptoAssets(portfolio: Portfolio): Asset[] {
+    return portfolio.assets.filter((x) => x.market === Market.CRYPTO);
   }
 }

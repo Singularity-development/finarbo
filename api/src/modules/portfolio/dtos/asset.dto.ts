@@ -75,4 +75,7 @@ export class AssetDto {
   @Type(() => BrokerDto)
   @ApiProperty({ type: [BrokerDto] })
   brokers: BrokerDto[];
+
+  @Expose()
+  holding: number;
 }
