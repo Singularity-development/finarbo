@@ -29,6 +29,7 @@ export type Asset = {
   percentageResult?: number;
   updateDate?: Date;
   brokers: Broker[];
+  holding: number;
 };
 
 export type Broker = {

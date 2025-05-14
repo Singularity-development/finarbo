@@ -80,8 +80,8 @@ export class AssetTypeConcentrationRuleService implements IRule {
       return new Result(
         this.getRuleName(),
         Severity.NONE,
-        0,
-        maxHoldingPercentage,
+        undefined,
+        undefined,
         {
           distributedAssetByType,
         },
@@ -100,17 +100,16 @@ export class AssetTypeConcentrationRuleService implements IRule {
 
     const severity = Result.calculateSeverity(score, maxHoldingPercentage);
 
-    return new Result(
-      this.getRuleName(),
-      severity,
-      score,
-      maxHoldingPercentage,
-      {
-        distributedAssetByType,
-        exceedAssetByType,
-        maxExceedAssetType: assetType,
-      },
-    );
+    return new Result(this.getRuleName(), severity, undefined, undefined, {
+      distributedAssetByType,
+      exceedAssetByType,
+      maxExceedAssetType: assetType,
+    });
+  }
+
+  // Ignore
+  getPortfolioAssetsInvolved(): Asset[] {
+    return [];
   }
 
   checkIfRuleApply(portfolio: Portfolio): boolean {

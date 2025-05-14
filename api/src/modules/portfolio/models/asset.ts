@@ -19,6 +19,7 @@ export class Asset {
   private _updateDate?: Date;
   private _currency?: FiatCurrency;
   private _brokers: Broker[];
+  private _holding: number;
 
   constructor(
     symbol: string,
@@ -95,6 +96,12 @@ export class Asset {
   get brokers() {
     return this._brokers;
   }
+  get holding() {
+    return this._holding;
+  }
+  set holding(holding: number) {
+    this._holding = holding;
+  }
 
   setAcp(acp: number, currency: FiatCurrency) {
     this._acp = new Price(acp, currency);
@@ -120,7 +127,7 @@ export class Asset {
       return this._lastPrice.value;
     }
 
-    return this._acp?.value ?? 1;
+    return this._acp?.value ?? 0;
   }
 
   getNominalPriceValue() {

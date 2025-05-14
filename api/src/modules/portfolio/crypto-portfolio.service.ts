@@ -16,6 +16,10 @@ export class CryptoPortfolioService {
   constructor(private readonly coinMarketService: CoinMarketService) {}
 
   async mapCryptoAssets(assets: InputAssetDto[]): Promise<Asset[]> {
+    if (assets.length <= 0) {
+      return [];
+    }
+
     const cryptosBySymbol = await this.getCryptos();
     const portfolioAssetsBySymbol = toRecord(assets, (x) => x.symbol);
 

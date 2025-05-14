@@ -2,12 +2,14 @@ import { Portfolio } from "@/services/apis/portfolio/portfolio.model";
 import { AnalyzeButton } from "./components/analyze-button";
 import { useTranslation } from "react-i18next";
 import PortfolioCard from "./components/cards/portfolio-card";
-import ResultCard from "./components/cards/result-card";
 import AssetsCard from "./components/cards/assets-card";
 import { Button } from "@/components/ui/button";
+import RuleResultCard from "./components/cards/rule-result-card";
+import { useGetRuleResultsQuery } from "@/services/apis/analysis/analysis.api";
 
 export function PortfolioHeader({ portfolio }: { portfolio?: Portfolio }) {
   const { t } = useTranslation();
+  const { data: ruleResults } = useGetRuleResultsQuery();
 
   return (
     <header>
@@ -34,14 +36,11 @@ export function PortfolioHeader({ portfolio }: { portfolio?: Portfolio }) {
           stocks={portfolio?.markets.stocks}
           date={portfolio?.date}
           currency={portfolio?.total.currency}
-          exchange={portfolio?.exchange}
-        />
-        <ResultCard
           result={portfolio?.result.value}
           percentageResult={portfolio?.percentageResult}
-          currency={portfolio?.result.currency}
         />
         <AssetsCard assets={portfolio?.assets} />
+        <RuleResultCard results={ruleResults} />
       </div>
     </header>
   );

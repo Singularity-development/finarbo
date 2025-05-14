@@ -1,0 +1,116 @@
+{
+  "portfolio": [
+    {
+      "symbol": "AMZN",
+      "acp": 1651.65,
+      "amount": 91,
+      "broker": "IOL",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "BPOC7",
+      "acp": 233.109410,
+      "amount": 98,
+      "broker": "IOL",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "BPY26",
+      "acp": 105900,
+      "amount": 200,
+      "broker": "IOL",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "CEPU",
+      "acp": 1475.63,
+      "amount": 160,
+      "broker": "IOL",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "CVX",
+      "acp": 10923.69,
+      "amount": 13,
+      "broker": "IOL",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "DIA",
+      "acp": 25900,
+      "amount": 10,
+      "broker": "IOL",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "GD30",
+      "acp": 85628.87,
+      "amount": 115,
+      "broker": "IOL",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "BG35",
+      "acp": 78518.58,
+      "amount": 183,
+      "broker": "IOL",
+      "type": "BOND",
+      "market": "ARG"
+    },
+    {
+      "symbol": "GGAL",
+      "acp": 6547.90,
+      "amount": 76,
+      "broker": "IOL",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "NU",
+      "acp": 6300,
+      "amount": 23,
+      "broker": "IOL",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "PAMP",
+      "acp": 3452.69,
+      "amount": 67,
+      "broker": "IOL",
+      "type": "STOCK",
+      "market": "ARG"
+    },
+    {
+      "symbol": "SPY",
+      "acp": 37914.62,
+      "amount": 13,
+      "broker": "IOL",
+      "type": "CEDEAR",
+      "market": "ARG"
+    },
+    {
+      "symbol": "T13F6",
+      "acp": 106.10,
+      "amount": 93327,
+      "broker": "IOL",
+      "type": "LETTER",
+      "market": "ARG"
+    },
+    {
+      "symbol": "TRAN",
+      "acp": 2625.07,
+      "amount": 76,
+      "broker": "IOL",
+      "type": "CEDEAR",
+      "market": "ARG"
+    }
+  ]
+}

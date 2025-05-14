@@ -12,6 +12,10 @@ export class CurrencyPortfolioService {
   constructor(private readonly dollarApiService: DollarApiService) {}
 
   async mapCurrenciesAssets(assets: InputAssetDto[]): Promise<Asset[]> {
+    if (assets.length <= 0) {
+      return [];
+    }
+
     // Map assets
     const currencyAssets: Asset[] = await Promise.all(
       assets.map(async (asset) => await this.createAsset(asset)),

@@ -5,7 +5,7 @@ import { IRule, RULE_SERVICES } from './rule';
 import { ShitCoinRuleService } from './crypto/shit-coin-rule.service';
 import { RulesService } from './rules.service';
 import { AssetTypeConcentrationRuleService } from './market/asset-type-concentration-rule.service';
-import { InflationRuleService } from './market/inflation-rule.service';
+import { DevaluationRuleService } from './market/devaluation-rule.service';
 import { PublicRiskRuleService } from './market/public-risk-rule.service';
 import { AssetConcentrationRuleService } from './market/asset-concentration-rule.service';
 
@@ -13,7 +13,7 @@ const ruleServices = [
   AlternativeCryptoRuleService,
   ShitCoinRuleService,
   AssetTypeConcentrationRuleService,
-  InflationRuleService,
+  DevaluationRuleService,
   PublicRiskRuleService,
   AssetConcentrationRuleService,
 ];

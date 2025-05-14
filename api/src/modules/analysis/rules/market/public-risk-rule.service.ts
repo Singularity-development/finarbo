@@ -4,6 +4,7 @@ import { convertCurrency } from '@common/models/fiat-currency.model';
 import { Portfolio } from '@modules/portfolio/models/portfolio';
 import { IRule, RuleType } from '../rule';
 import { AssetType } from '@common/models/asset.model';
+import { Asset } from '@modules/portfolio/models/asset';
 
 @Injectable()
 export class PublicRiskRuleService implements IRule {
@@ -17,11 +18,9 @@ export class PublicRiskRuleService implements IRule {
     }
 
     const { maxHoldingPercentage } = this.CONFIG;
-    const { assets, total, exchange } = portfolio;
+    const { total, exchange } = portfolio;
 
-    const exposedAssets = assets.filter((x) =>
-      [AssetType.LETTER, AssetType.BOND].includes(x.type),
-    );
+    const exposedAssets = this.getPortfolioAssetsInvolved(portfolio);
 
     const totalExposed =
       exposedAssets
@@ -47,6 +46,16 @@ export class PublicRiskRuleService implements IRule {
       severity,
       score,
       maxHoldingPercentage,
+    );
+  }
+
+  getPortfolioAssetsInvolved(portfolio: Portfolio): Asset[] {
+    if (!this.checkIfRuleApply(portfolio)) {
+      return [];
+    }
+
+    return portfolio.assets.filter((x) =>
+      [AssetType.LETTER, AssetType.BOND].includes(x.type),
     );
   }
 
