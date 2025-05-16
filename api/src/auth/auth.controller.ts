@@ -19,6 +19,7 @@ import { Public } from './auth.decorator';
 import { Request as ExpressRequest } from 'express';
 import { UserDto, UserSaveDto } from './users/user.dto';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Auth')
 @Controller()
@@ -29,6 +30,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: SignInDto })
   @ApiOkResponse({ type: TokensResponseDto })
+  @Throttle({ short: { limit: 2, ttl: 1000 }, long: { limit: 5, ttl: 60000 } })
   @Post('signin')
   signIn(@Body() signInDto: SignInDto, @Req() req: ExpressRequest) {
     return this.authService.signIn(signInDto.login, signInDto.password, req);
@@ -51,6 +53,10 @@ export class AuthController {
   @Public()
   @ApiBody({ type: RefreshTokenDto })
   @ApiOkResponse({ type: TokensResponseDto })
+  @Throttle({
+    short: { limit: 1, ttl: 1000 },
+    long: { limit: 2, ttl: 60000 },
+  })
   @Post('refresh')
   refresh(@Body() refreshToken: RefreshTokenDto, @Req() req: ExpressRequest) {
     return this.authService.refreshAccessToken(refreshToken.refreshToken, req);

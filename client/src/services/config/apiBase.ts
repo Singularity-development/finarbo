@@ -1,5 +1,4 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import axios from "axios";
 import type { AxiosError, AxiosRequestConfig } from "axios";
 import {
   AxiosRequestMeta,
@@ -7,6 +6,7 @@ import {
   CustomError,
   getApiUrl,
 } from "./api.model";
+import api from "./axiosIntance";
 
 const axiosBaseQuery =
   (
@@ -15,7 +15,7 @@ const axiosBaseQuery =
   async ({ url, method, data, params, headers }: AxiosRequestConfig) => {
     try {
       const baseUrlStr = typeof baseUrl === "string" ? baseUrl : baseUrl();
-      const { data: resp, ...other } = await axios({
+      const { data: resp, ...other } = await api({
         url: baseUrlStr + url,
         method,
         data,

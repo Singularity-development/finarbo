@@ -1,4 +1,6 @@
 {
-  "/": "Home",
-  "/portfolio": "Portfolio"
+  "login": "Login",
+  "signup": "Sign up",
+  "portfolio": "Portfolio",
+  "risks": "Risk Analysis"
 }

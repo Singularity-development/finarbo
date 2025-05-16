@@ -15,17 +15,18 @@ export class SignInDto {
   password: string;
 }
 
+export class RefreshTokenDto {
+  @IsString()
+  @ApiProperty()
+  refreshToken: string;
+}
+
 export class TokensResponseDto {
   @Expose()
   @ApiProperty()
   accessToken: string;
 
   @Expose()
-  @ApiProperty()
-  refreshToken: string;
-}
-
-export class RefreshTokenDto {
   @ApiProperty()
   refreshToken: string;
 }

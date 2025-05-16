@@ -24,7 +24,11 @@ const corsConfig = () => {
   }
 
   Logger.debug('CORS', `CORS config: ${JSON.stringify(cors)}`);
-  return cors;
+  return {
+    ...cors,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  };
 };
 
 export default registerAs('cors', corsConfig);

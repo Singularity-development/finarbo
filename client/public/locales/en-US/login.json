@@ -4,12 +4,19 @@
   "fields": {
     "email": {
       "label": "Email",
-      "placeholder": "email@example.com"
+      "placeholder": "email@example.com",
+      "validations": {
+        "required": "Email is required",
+        "pattern": "Email is not valid"
+      }
     },
     "password": {
       "label": "Password",
       "placeholder": "Enter your password",
-      "forgotPassword": "Forgot your password?"
+      "forgotPassword": "Forgot your password?",
+      "validations": {
+        "required": "Password is required"
+      }
     }
   },
   "login": {

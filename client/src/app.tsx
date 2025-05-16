@@ -6,6 +6,7 @@ import { useDocumentTitle } from "./common/hooks/useDocumentTitle";
 import ROUTES, { AUTH_ROUTES } from "./features/routes";
 import RootLayout from "./layout/root-layout";
 import AuthLayout from "./layout/auth-layout";
+import { Toaster } from "./components/ui/sonner";
 
 const App = () => {
   useDocumentTitle();
@@ -37,6 +38,7 @@ const App = () => {
 
         <Route path="*" element={<Page404 />} />
       </Routes>
+      <Toaster />
     </Suspense>
   );
 };

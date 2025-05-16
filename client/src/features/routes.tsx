@@ -6,6 +6,7 @@ const Portfolio = lazy(() => import("./portfolio/portfolio"));
 const Risks = lazy(() => import("./risks/risks"));
 const RiskDetail = lazy(() => import("./risks/detail/risk-detail"));
 const Login = lazy(() => import("./auth/login"));
+const SignUp = lazy(() => import("./auth/signup"));
 
 // Route config
 const ROUTES: RouteProps[] = [
@@ -15,7 +16,12 @@ const ROUTES: RouteProps[] = [
 ];
 
 // Route config
-const AUTH_ROUTES: RouteProps[] = [{ path: "login", element: <Login /> }];
+const AUTH_ROUTES: RouteProps[] = [
+  { path: "login", element: <Login /> },
+  { path: "signup", element: <SignUp /> },
+];
 
-export { AUTH_ROUTES };
+const PUBLIC_ROUTES = AUTH_ROUTES;
+
+export { AUTH_ROUTES, PUBLIC_ROUTES };
 export default ROUTES;

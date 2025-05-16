@@ -1,0 +1,46 @@
+{
+  "title": "Register your account",
+  "subTitle": "Fill out the form to create your account",
+  "fields": {
+    "username": {
+      "label": "Username",
+      "placeholder": "First Last",
+      "validations": {
+        "required": "Username is required"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "email@example.com",
+      "validations": {
+        "required": "Email is required",
+        "pattern": "Invalid email address"
+      }
+    },
+    "confirmEmail": {
+      "label": "Confirm Email",
+      "placeholder": "email@example.com",
+      "validations": {
+        "required": "Email confirmation is required",
+        "pattern": "Invalid email address",
+        "notMatch": "Emails do not match"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "forgotPassword": "Forgot your password?",
+      "validations": {
+        "required": "Password is required",
+        "pattern": "Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character."
+      }
+    }
+  },
+  "signup": "Register account",
+  "haveAccount": "Already have an account?",
+  "login": "Log in",
+  "success": {
+    "title": "Successful registration!",
+    "message": "We have sent a verification email to your email address. Please check your email to activate your account."
+  }
+}

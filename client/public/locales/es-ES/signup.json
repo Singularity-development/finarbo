@@ -1,0 +1,46 @@
+{
+  "title": "Registrar tu cuenta",
+  "subTitle": "Completa el formulario para crear tu cuenta",
+  "fields": {
+    "username": {
+      "label": "Nombre de usuario",
+      "placeholder": "Nombre Apellido",
+      "validations": {
+        "required": "El nombre de usuario es obligatorio"
+      }
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "correo@ejemplo.com",
+      "validations": {
+        "required": "El correo electrónico es obligatorio",
+        "pattern": "El correo electrónico no es válido"
+      }
+    },
+    "confirmEmail": {
+      "label": "Confirmar Correo electrónico",
+      "placeholder": "correo@ejemplo.com",
+      "validations": {
+        "required": "El correo electrónico es obligatorio",
+        "pattern": "El correo electrónico no es válido",
+        "notMatch": "Los correos electrónicos no coinciden"
+      }
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa tu contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "validations": {
+        "required": "La contraseña es obligatoria",
+        "pattern": "La contraseña debe tener al menos 8 caracteres y contener una mayúscula, una minúscula, un número y un carácter especial."
+      }
+    }
+  },
+  "signup": "Registrar cuenta",
+  "haveAccount": "¿Tienes una cuenta?",
+  "login": "Inicia sesión",
+  "success": {
+    "title": "Registro exitoso!",
+    "message": "Hemos enviado un correo electrónico de verificación a tu correo electrónico. Por favor, verifica tu correo electrónico para activar tu cuenta."
+  }
+}
