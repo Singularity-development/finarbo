@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import Logo from "./logo";
-import { LanguageSelector } from "./language-selector";
+import AccountHeader from "./account-menu";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -12,7 +12,7 @@ const Header = () => {
         <h1 className="text-xl font-semibold text-white">{t("title")}</h1>
       </div>
       <div className="ml-auto flex items-center gap-4">
-        <LanguageSelector />
+        <AccountHeader />
       </div>
     </header>
   );

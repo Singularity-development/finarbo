@@ -1,4 +1,5 @@
 import {
+  Profile,
   useLazyGetProfileQuery,
   useLogoutMutation,
   useSignInMutation,
@@ -18,6 +19,7 @@ import { SerializedError } from "@reduxjs/toolkit";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  profile?: Profile;
   sigIn: {
     request: (email: string, password: string) => Promise<void>;
     isLoading: boolean;
@@ -43,6 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [profile, setProfile] = useState<Profile | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [sigInRequest, sigInStatus] = useSignInMutation();
   const [logoutRequest, logoutStatus] = useLogoutMutation();
@@ -59,7 +62,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     getProfile()
-      .then(() => {
+      .then((resp) => {
+        setProfile(resp.data);
         setIsAuthenticated(true);
       })
       .catch(() => {
@@ -115,6 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        profile,
         sigIn: {
           request: sigIn,
           ...sigInStatus,

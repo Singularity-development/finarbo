@@ -2,6 +2,14 @@ import { coreApi } from "@/services/config/apiBase";
 import { HTTP_METHODS } from "@/common/constants/http-methods";
 import { cacheTimings } from "@/common/constants/timings";
 
+export type Profile = {
+  username: string;
+  email: string;
+  roles: string[];
+  emailVerified: boolean;
+  avatarUrl?: string;
+};
+
 const authApi = coreApi
   .enhanceEndpoints({ addTagTypes: ["User"] })
   .injectEndpoints({
@@ -34,7 +42,7 @@ const authApi = coreApi
         }),
         invalidatesTags: ["User"],
       }),
-      getProfile: builder.query<void, void>({
+      getProfile: builder.query<Profile, void>({
         query: () => ({
           url: `profile`,
           method: HTTP_METHODS.GET,
