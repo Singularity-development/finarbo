@@ -33,7 +33,7 @@ export class UsersService {
     user.username = userData.username;
     user.passwordHash = await bcrypt.hash(userData.password, 10);
     user.roles = [Role.User];
-    user.emailVerified = false;
+    user.emailVerified = true; // TODO: #4 Implement Email Verification System - see https://github.com/Singularity-development/finarbo/issues/4
 
     return await this.usersRepository.save(user);
   }
