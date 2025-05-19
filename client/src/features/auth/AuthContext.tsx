@@ -1,4 +1,5 @@
 import {
+  authApi,
   Profile,
   useLazyGetProfileQuery,
   useLogoutMutation,
@@ -16,6 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { PUBLIC_ROUTES } from "../routes";
 import { CustomError } from "@/services/config/api.model";
 import { SerializedError } from "@reduxjs/toolkit";
+import { useAppDispatch } from "@/common/hooks/useStoreHooks";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -42,6 +44,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -93,26 +96,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     sigInRequest({
       login: email,
       password,
-    }).then((res) => {
-      if (!res.data) {
-        throw new Error("Login failed");
-      }
-      const { accessToken, refreshToken } = res.data;
-      saveAccessToken(accessToken);
-      saveRefreshToken(refreshToken);
-      setIsAuthenticated(true);
-    });
+    })
+      .then(async (res) => {
+        if (!res.data) {
+          throw new Error("Login failed");
+        }
+        const { accessToken, refreshToken } = res.data;
+        saveAccessToken(accessToken);
+        saveRefreshToken(refreshToken);
+        setIsAuthenticated(true);
+      })
+      .then(() => getProfile());
   };
 
   const logout = async () => {
-    logoutRequest()
-      .then(() => {
-        setIsAuthenticated(false);
-      })
-      .finally(() => {
-        removeAccessToken();
-        removeRefreshToken();
-      });
+    logoutRequest().then(() => {
+      dispatch(authApi.util.resetApiState());
+      removeAccessToken();
+      removeRefreshToken();
+      setIsAuthenticated(false);
+    });
   };
 
   return (

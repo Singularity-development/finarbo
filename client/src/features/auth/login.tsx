@@ -64,6 +64,7 @@ const Login = () => {
             id="email"
             type="email"
             disabled={isSigIng}
+            autoComplete="username"
             placeholder={t("fields.email.placeholder", { ns: "login" })}
             {...register("email", loginSchema.email)}
           />
