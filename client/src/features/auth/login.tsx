@@ -8,9 +8,11 @@ import useAuth from "./useAuth";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useErrorParser } from "@/common/errors/useErrorParser";
 
 const Login = () => {
   const { t } = useTranslation();
+  const { translateInlineError } = useErrorParser();
   const { sigIn } = useAuth();
   const navigate = useNavigate();
   const {
@@ -19,7 +21,7 @@ const Login = () => {
     formState: { errors },
   } = useForm<{ email: string; password: string }>();
 
-  const { isLoading: isSigIng, request, isSuccess } = sigIn;
+  const { isLoading: isSigIng, request, isSuccess, error } = sigIn;
 
   const onSubmit = (data: { email: string; password: string }) =>
     request(data.email, data.password);
@@ -96,6 +98,12 @@ const Login = () => {
         <Button type="submit" className="w-full" isLoading={isSigIng}>
           {t("login.normal", { ns: "login" })}
         </Button>
+
+        {error && (
+          <span className="text-red-400 text-sm">
+            {translateInlineError(error)}
+          </span>
+        )}
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">
             {t("login.alternative", { ns: "login" })}

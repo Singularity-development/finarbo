@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import {
   AuthenticatedRequest,
@@ -12,6 +12,7 @@ import { Request } from 'express';
 import { Mapper } from '@common/util/mapper';
 import { UserDto, UserSaveDto } from './users/user.dto';
 import { plainToInstance } from 'class-transformer';
+import { AUTH_ERRORS } from './errors';
 
 @Injectable()
 export class AuthService {
@@ -28,13 +29,13 @@ export class AuthService {
     const user = await this.usersService.findOneByLogin(login);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw AUTH_ERRORS.INVALID_CREDENTIALS;
     }
 
     await this.checkPassword(password, user);
 
     if (!user.emailVerified) {
-      throw new UnauthorizedException('Email not verified');
+      throw AUTH_ERRORS.EMAIL_NOT_VERIFIED;
     }
 
     const payload: Partial<AuthPayload> = {
@@ -75,13 +76,13 @@ export class AuthService {
 
   private async checkPassword(password?: string, user?: User) {
     if (!password || !user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw AUTH_ERRORS.INVALID_CREDENTIALS;
     }
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
 
     if (!isMatch) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw AUTH_ERRORS.INVALID_CREDENTIALS;
     }
   }
 }

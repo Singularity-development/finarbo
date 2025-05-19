@@ -9,10 +9,12 @@ import { useSignUpMutation } from "@/services/apis/auth/auth.api";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
 import { toast } from "sonner";
+import { useErrorParser } from "@/common/errors/useErrorParser";
 
 const SignUp = () => {
   const { t } = useTranslation();
-  const [signUp, { isLoading, isSuccess }] = useSignUpMutation();
+  const { translateInlineError } = useErrorParser();
+  const [signUp, { isLoading, isSuccess, error }] = useSignUpMutation();
   const navigate = useNavigate();
   const {
     register,
@@ -159,6 +161,11 @@ const SignUp = () => {
         <Button type="submit" className="w-full" isLoading={isLoading}>
           {t("signup", { ns: "signup" })}
         </Button>
+        {error && (
+          <span className="text-red-400 text-sm">
+            {translateInlineError(error)}
+          </span>
+        )}
       </div>
       <div className="text-center text-sm text-muted-foreground mt-2">
         {t("haveAccount", { ns: "signup" })}{" "}

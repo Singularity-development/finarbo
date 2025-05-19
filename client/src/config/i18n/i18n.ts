@@ -27,6 +27,7 @@ i18n
       "risks",
       "login",
       "signup",
+      "errors",
     ], // Default namespaces
     defaultNS: "global",
   });

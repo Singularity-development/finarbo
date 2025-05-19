@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { UserSaveDto } from './user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { USER_ERRORS } from './errors';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +25,7 @@ export class UsersService {
       })) !== null;
 
     if (emailAlreadyUsed) {
-      throw new Error('Email already used');
+      throw USER_ERRORS.EMAIL_ALREADY_USED;
     }
 
     const user = new User();

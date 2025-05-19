@@ -13,6 +13,8 @@ import {
 import { createContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PUBLIC_ROUTES } from "../routes";
+import { CustomError } from "@/services/config/api.model";
+import { SerializedError } from "@reduxjs/toolkit";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -20,11 +22,13 @@ interface AuthContextType {
     request: (email: string, password: string) => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
+    error?: CustomError | SerializedError;
   };
   logout: {
     request: () => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
+    error?: CustomError | SerializedError;
   };
   isLoading: boolean;
 }

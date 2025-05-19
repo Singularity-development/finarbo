@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { AxiosError, AxiosRequestConfig } from "axios";
+import type { AxiosRequestConfig } from "axios";
 import {
   AxiosRequestMeta,
   CustomBaseQueryFnType,
@@ -30,13 +30,8 @@ const axiosBaseQuery =
         } as AxiosRequestMeta,
       };
     } catch (axiosError) {
-      const err = axiosError as AxiosError;
       return {
-        error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
-          headers: err.response?.headers,
-        } as CustomError,
+        error: axiosError as CustomError,
       };
     }
   };

@@ -1,0 +1,6 @@
+{
+  "INVALID_CREDENTIALS": "Incorrect email or password.",
+  "EMAIL_NOT_VERIFIED": "Email not verified.",
+  "EMAIL_ALREADY_USED": "Email already in use.",
+  "UNKNOWN": "Unexpected error."
+}
