@@ -47,10 +47,10 @@ const Slider = <T extends ReactElement>({
     ]
   );
   return (
-    <div ref={sliderRef} className="keen-slider">
+    <div ref={sliderRef} className="keen-slider gap-4">
       {slides.map((element, i) => (
         <div
-          className={`keen-slider__slide number-slide${i + 1} px-2`}
+          className={`keen-slider__slide number-slide${i + 1}`}
           key={element.key}
         >
           {element}

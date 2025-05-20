@@ -54,11 +54,7 @@ const AssetTable = ({
     }
 
     return assets.map((asset) => (
-      <TableRow
-        key={`${asset.symbol}`}
-        className="border-[#1e2030] hover:bg-[#1a1d2d]"
-        style={{ height: 53 }}
-      >
+      <TableRow key={`${asset.symbol}`} style={{ height: 53 }}>
         <TableCell>
           <AssetBadge type={asset.type} />
         </TableCell>
@@ -73,7 +69,7 @@ const AssetTable = ({
           <AssetMarket market={asset.market} />
         </TableCell>
         <TableCell>
-          <Badge variant="outline" className="border-[#1e2030] text-gray-400">
+          <Badge variant="outline" className="text-gray-400">
             {asset.symbol}
           </Badge>
         </TableCell>
@@ -124,8 +120,8 @@ const AssetTable = ({
     return (
       <>
         <Table>
-          <TableHeader className="bg-[#0a0c10]">
-            <TableRow className="border-[#1e2030] hover:bg-[#1a1d2d]">
+          <TableHeader>
+            <TableRow>
               <TableHead className="text-gray-400">
                 {t("attributes.type", { ns: "portfolio" })}
               </TableHead>
@@ -165,11 +161,7 @@ const AssetTable = ({
     );
   }, [assets, i18n.language, loading.isLoading]);
 
-  return (
-    <Card className="bg-[#131620] border-[#1e2030] text-white overflow-hidden">
-      {table}
-    </Card>
-  );
+  return <Card className="text-white overflow-hidden p-4">{table}</Card>;
 };
 
 export default AssetTable;

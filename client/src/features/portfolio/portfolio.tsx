@@ -68,12 +68,12 @@ const Portfolio = () => {
       <PortfolioHeader portfolio={portfolio} />
       <Tabs defaultValue={DEFAULT.tab} className="space-y-2">
         <div className="flex items-center justify-between">
-          <TabsList className="bg-[#0a0c10] text-gray-400">
+          <TabsList className="text-gray-400">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="data-[state=active]:bg-[#131620] data-[state=active]:text-white"
+                className="data-[state=active]:text-white mx-2 cursor-pointer"
                 onClick={() => filterTable(tab.value)}
               >
                 {t(`tabs.${tab.value}`, { ns: "portfolio" })}

@@ -23,8 +23,8 @@ const AssetsCard = ({ assets = [] }: { assets?: Asset[] }) => {
   const lossesPercentage = total !== 0 ? (losses / total) * 100 : 0;
 
   return (
-    <Card className="bg-[#131620] border-[#1e2030] text-white">
-      <CardContent className="px-6 h-full flex flex-col">
+    <Card className="text-white">
+      <CardContent className="px-6 h-full flex flex-col z-10">
         <div className="flex flex-col gap-2">
           <header className="text-sm font-medium text-gray-400">
             {t("cards.assets.title", { ns: "portfolio" })}

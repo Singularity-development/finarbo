@@ -29,7 +29,7 @@ const Risks = () => {
       return (
         <Card
           key={ruleResult.code}
-          className="bg-[#131620] border-[#1e2030] text-white hover:shadow-lg transition-all duration-300 group h-full px-6 gap-2 justify-between"
+          className="text-white hover:shadow-lg transition-all duration-300 group h-full px-6 gap-2 justify-between"
         >
           <CardHeader
             className={

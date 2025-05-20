@@ -33,7 +33,7 @@ const PortfolioCard = ({
   const { t } = useTranslation();
 
   return (
-    <Card className="bg-[#131620] border-[#1e2030] text-white">
+    <Card className="text-white">
       <CardContent className="px-6">
         <div className="flex flex-col gap-2">
           <header className="text-sm font-medium text-gray-400">

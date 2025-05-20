@@ -3,7 +3,7 @@ import { RuleResult } from "@/services/apis/analysis/rule.model";
 import { useTranslation } from "react-i18next";
 
 const QuoteBlock = ({ quote, author }: { quote: string; author: string }) => (
-  <blockquote className="relative text-gray-400 italic mt-4 p-4 px-6 border border-gray-800 rounded-md">
+  <blockquote className="relative text-gray-400 italic mt-4 p-4 px-6 border rounded-md">
     <figure className="absolute top-4 left-4 text-gray-700 text-6xl font-serif">
       "
     </figure>
