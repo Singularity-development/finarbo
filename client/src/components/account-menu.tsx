@@ -16,13 +16,17 @@ import { LanguagesIcon, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Avatar from "./avatar";
+import { useGetProfileQuery } from "@/services/apis/auth/auth.api";
 
 const SUPPORTED_LANGUAGES = [{ code: "es-ES" }, { code: "en-US" }];
 
 const AccountHeader = () => {
   const { t } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
-  const { profile, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
+  const { data: profile } = useGetProfileQuery(undefined, {
+    skip: !isAuthenticated,
+  });
 
   const changeLanguage = (code: string) => {
     i18n.changeLanguage(code).then(() => setLanguage(code));

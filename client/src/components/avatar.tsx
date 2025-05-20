@@ -1,7 +1,8 @@
-import useAuth from "@/features/auth/useAuth";
+import { useGetProfileQuery } from "@/services/apis/auth/auth.api";
 
 const Avatar = () => {
-  const { profile } = useAuth();
+  const { data: profile } = useGetProfileQuery();
+
   return (
     <img
       className="rounded-full"

@@ -1,6 +1,5 @@
 import {
   authApi,
-  Profile,
   useLazyGetProfileQuery,
   useLogoutMutation,
   useSignInMutation,
@@ -21,7 +20,6 @@ import { useAppDispatch } from "@/common/hooks/useStoreHooks";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  profile?: Profile;
   sigIn: {
     request: (email: string, password: string) => Promise<void>;
     isLoading: boolean;
@@ -48,12 +46,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [profile, setProfile] = useState<Profile | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [sigInRequest, sigInStatus] = useSignInMutation();
   const [logoutRequest, logoutStatus] = useLogoutMutation();
   const [getProfile] = useLazyGetProfileQuery();
 
+  // Is authenticated?
   useEffect(() => {
     setIsLoading(true);
     const refreshToken = getRefreshToken();
@@ -65,16 +63,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     getProfile()
-      .then((resp) => {
-        setProfile(resp.data);
-        setIsAuthenticated(true);
-      })
-      .catch(() => {
-        setIsAuthenticated(false);
-      })
+      .then(() => setIsAuthenticated(true))
+      .catch(() => setIsAuthenticated(false))
       .finally(() => setIsLoading(false));
   }, []);
 
+  // Navigate to login
   useEffect(() => {
     if (isLoading) {
       return;
@@ -96,17 +90,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     sigInRequest({
       login: email,
       password,
-    })
-      .then(async (res) => {
-        if (!res.data) {
-          throw new Error("Login failed");
-        }
-        const { accessToken, refreshToken } = res.data;
-        saveAccessToken(accessToken);
-        saveRefreshToken(refreshToken);
-        setIsAuthenticated(true);
-      })
-      .then(() => getProfile());
+    }).then(async (res) => {
+      if (!res.data) {
+        throw new Error("Login failed");
+      }
+      const { accessToken, refreshToken } = res.data;
+      saveAccessToken(accessToken);
+      saveRefreshToken(refreshToken);
+      setIsAuthenticated(true);
+    });
   };
 
   const logout = async () => {
@@ -122,7 +114,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        profile,
         sigIn: {
           request: sigIn,
           ...sigInStatus,

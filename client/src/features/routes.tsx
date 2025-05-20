@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { RouteProps } from "react-router-dom";
+import { Navigate, RouteProps } from "react-router-dom";
 
 // Lazy-loaded screens
 const Portfolio = lazy(() => import("./portfolio/portfolio"));
@@ -13,6 +13,7 @@ const ROUTES: RouteProps[] = [
   { path: "portfolio", element: <Portfolio /> },
   { path: "risks", element: <Risks /> },
   { path: "risks/:risk", element: <RiskDetail /> },
+  { path: "*", element: <Navigate to="/portfolio" replace /> },
 ];
 
 // Route config
