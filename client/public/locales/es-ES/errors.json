@@ -1,0 +1,6 @@
+{
+  "INVALID_CREDENTIALS": "Correo electrónico o Contraseña incorrectas.",
+  "EMAIL_NOT_VERIFIED": "Correo electrónico no verificado",
+  "EMAIL_ALREADY_USED": "Correo electrónico utilizado",
+  "UNKNOWN": "Error inesperado."
+}

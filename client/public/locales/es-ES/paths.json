@@ -1,4 +1,6 @@
 {
-  "/": "Home",
-  "/portfolio": "Portfolio"
+  "login": "Inicio de sesión",
+  "signup": "Registro de cuenta",
+  "portfolio": "Portfolio",
+  "risks": "Analisis de Riesgos"
 }

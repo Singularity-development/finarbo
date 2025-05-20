@@ -3,5 +3,10 @@
   "footer": "All rights reserved.",
   "actions": {
     "detail": "View detail"
+  },
+  "accountMenu": {
+    "account": "Account",
+    "languages": "Languages",
+    "logout": "Log out"
   }
 }

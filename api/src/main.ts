@@ -1,16 +1,30 @@
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; // TODO - remove this in production
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@common/errors/http-exception.filter';
-import { setupSwagger } from '@common/config/swagger.config';
+import { setupSwagger } from './config/swagger.config';
+import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+
   app.useGlobalFilters(new HttpExceptionFilter());
   app.setGlobalPrefix('api');
-  app.enableCors(); // make configurable
+  app.enableCors(configService.get('cors'));
   setupSwagger(app);
 
-  await app.listen(process.env.PORT ?? 3000, process.env.HOST ?? '0.0.0.0');
+  const appConfig = configService.get<{
+    port: number;
+    hostname: string;
+  }>('app');
+
+  if (!appConfig) {
+    throw new Error('Missing "app" config');
+  }
+
+  await app.listen(appConfig.port, appConfig.hostname);
+
+  Logger.log('App', `App is running on: ${await app.getUrl()}/api`);
 }
 bootstrap();

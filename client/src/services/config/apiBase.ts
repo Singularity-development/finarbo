@@ -1,12 +1,12 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import axios from "axios";
-import type { AxiosError, AxiosRequestConfig } from "axios";
+import type { AxiosRequestConfig } from "axios";
 import {
   AxiosRequestMeta,
   CustomBaseQueryFnType,
   CustomError,
   getApiUrl,
 } from "./api.model";
+import api from "./axiosIntance";
 
 const axiosBaseQuery =
   (
@@ -15,7 +15,7 @@ const axiosBaseQuery =
   async ({ url, method, data, params, headers }: AxiosRequestConfig) => {
     try {
       const baseUrlStr = typeof baseUrl === "string" ? baseUrl : baseUrl();
-      const { data: resp, ...other } = await axios({
+      const { data: resp, ...other } = await api({
         url: baseUrlStr + url,
         method,
         data,
@@ -30,13 +30,8 @@ const axiosBaseQuery =
         } as AxiosRequestMeta,
       };
     } catch (axiosError) {
-      const err = axiosError as AxiosError;
       return {
-        error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
-          headers: err.response?.headers,
-        } as CustomError,
+        error: axiosError as CustomError,
       };
     }
   };
