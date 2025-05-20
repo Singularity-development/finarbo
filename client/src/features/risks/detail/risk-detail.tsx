@@ -7,7 +7,11 @@ import {
   useGetPortfolioAssetsQuery,
   useGetRuleResultsQuery,
 } from "@/services/apis/analysis/analysis.api";
-import { RULE_ICONS, RuleType } from "@/services/apis/analysis/rule.model";
+import {
+  getRiskColors,
+  RULE_ICONS,
+  RuleType,
+} from "@/services/apis/analysis/rule.model";
 import AssetTable from "./asset-table";
 import { useMemo } from "react";
 
@@ -79,7 +83,10 @@ const RiskDetail = () => {
               )}
             </div>
 
-            <h2 className="text-2xl text-white py-0.5 px-4 rounded">
+            <h2
+              className="text-2xl text-white py-0.5 px-4 rounded"
+              style={{ color: getRiskColors(riskResult.severity).color }}
+            >
               {t(`severity.${riskResult.severity}`, { ns: "rules" })}
             </h2>
           </div>

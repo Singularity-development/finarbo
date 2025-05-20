@@ -37,22 +37,22 @@ export const RULE_ICONS: Record<
 export const getRiskColors = (level: Severity) => {
   const colorMap = {
     [Severity.HIGHT]: {
-      color: "#F87171",
+      color: "oklch(63.7% 0.237 25.331)",
       backgroundColor: "#341A24",
       focusBackgroundColor: "#3A151C",
     },
     [Severity.MEDIUM]: {
-      color: "#f97316",
+      color: "oklch(79.5% 0.184 86.047)",
       backgroundColor: "#3d2000",
       focusBackgroundColor: "#3d2009",
     },
     [Severity.LOW]: {
-      color: "#3b82f6",
+      color: "oklch(90.5% 0.182 98.111)",
       backgroundColor: "#172554",
       focusBackgroundColor: "#172559",
     },
     [Severity.NONE]: {
-      color: "#10b981",
+      color: "oklch(70.7% 0.022 261.325)",
       backgroundColor: "#1a2e22",
       focusBackgroundColor: "#1a2e29",
     },

@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { formatPercentage } from "@/common/lib/number";
 import { ArrowUp, ArrowDown, ChevronRight } from "lucide-react";
-import { RULE_ICONS } from "@/services/apis/analysis/rule.model";
+import { getRiskColors, RULE_ICONS } from "@/services/apis/analysis/rule.model";
 
 const Risks = () => {
   const { t } = useTranslation();
@@ -46,7 +46,10 @@ const Risks = () => {
               </h5>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs py-0.5 rounded">
+              <span
+                className="text-xs py-0.5 rounded"
+                style={{ color: getRiskColors(ruleResult.severity).color }}
+              >
                 {t(`severity.${ruleResult.severity}`, { ns: "rules" })}
               </span>
             </div>
