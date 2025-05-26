@@ -1,0 +1,23 @@
+{
+  "name": "finarbo",
+  "version": "1.0.0",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "author": "Singularity studio",
+  "license": "ISC",
+  "dependencies": {
+    "finarbo": "file:"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0"
+  },
+  "lint-staged": {
+    "client/**/*.{js,ts,tsx,jsx}": [
+      "npm --prefix client run format",
+      "npm --prefix client run lint"
+    ],
+    "client/**/*.{json,css,md}": "npm --prefix client run format"
+  }
+}
