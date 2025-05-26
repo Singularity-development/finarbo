@@ -23,10 +23,7 @@ import EmptyState from "./empty-state";
 
 const SkeletonAssetTable = ({ rows = 16 }: { rows?: number }) => {
   return [...Array(rows)].map((_, i) => (
-    <TableRow
-      key={`empty-row-${i}`}
-      className="border-[#1e2030] hover:bg-[#1a1d2d]"
-    >
+    <TableRow key={`empty-row-${i}`}>
       {[...Array(10)].map((_, j) => (
         <TableCell key={`empty-cell-${j}`} style={{ height: 53 }}>
           <Skeleton className="h-4" />
@@ -55,15 +52,11 @@ const AssetTable = ({
 
     return assets.map(asset => (
       <TableRow key={`${asset.symbol}`} style={{ height: 53 }}>
+        <TableCell className="font-medium text-white">
+          <AssetName symbol={asset.symbol} name={asset.name} />
+        </TableCell>
         <TableCell>
           <AssetBadge type={asset.type} />
-        </TableCell>
-        <TableCell className="font-medium text-white">
-          <AssetName
-            symbol={asset.symbol}
-            name={asset.name}
-            type={asset.type}
-          />
         </TableCell>
         <TableCell className="text-center">
           <AssetMarket market={asset.market} />
@@ -123,10 +116,10 @@ const AssetTable = ({
           <TableHeader>
             <TableRow>
               <TableHead className="text-gray-400">
-                {t("attributes.type", { ns: "portfolio" })}
+                {t("attributes.asset", { ns: "portfolio" })}
               </TableHead>
               <TableHead className="text-gray-400">
-                {t("attributes.asset", { ns: "portfolio" })}
+                {t("attributes.type", { ns: "portfolio" })}
               </TableHead>
               <TableHead className="text-gray-400 text-center">
                 {t("attributes.market", { ns: "portfolio" })}
