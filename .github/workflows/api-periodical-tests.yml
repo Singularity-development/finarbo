@@ -2,8 +2,8 @@ name: Periodically api tests
 
 on:
   schedule:
-    # At 11:00 UTC on every day-of-week from Monday through Friday.
-    - cron: "0 11 * * 1-5"
+    # At 12:00 AM, only on Friday
+    - cron: "0 0 * * FRI"
 
   workflow_dispatch:
 
