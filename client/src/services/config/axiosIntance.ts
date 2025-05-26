@@ -1,11 +1,6 @@
 import axios from "axios";
 import { getApiUrl } from "./api.model";
-import {
-  getAccessToken,
-  getRefreshToken,
-  saveAccessToken,
-  saveRefreshToken,
-} from "../util/token.util";
+import { getAccessToken } from "../util/token.util";
 
 const api = axios.create({
   baseURL: getApiUrl(),
