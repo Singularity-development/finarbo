@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 # Install the application dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the application files
 COPY . .
@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 
 # Only copy production files from the builder stage
 COPY package*.json ./
-RUN npm install --only=production
+RUN npm ci --only=production
 
 # Copy built dist folder from builder
 COPY --from=builder /usr/src/app/dist ./dist
