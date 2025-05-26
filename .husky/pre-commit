@@ -1,1 +1,2 @@
 (cd client && npx --no-install lint-staged -q)
+(cd api && npx --no-install lint-staged -q)
