@@ -8,9 +8,10 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import dataBaseConfig from '@config/data-base.config';
-import { RequestContextService } from '@common/middleware/request-context.service';
 import corsConfig from '@config/cors.config';
 import appConfig from '@config/app.config';
+import { ContextMiddleware } from '@common/middleware/context.middleware';
+import { ContextModule } from '@common/middleware/context.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import appConfig from '@config/app.config';
     PortfolioModule,
     AnalysisModule,
     AuthModule,
+    ContextModule,
   ],
   providers: [
     {
@@ -49,6 +51,6 @@ import appConfig from '@config/app.config';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RequestContextService);
+    consumer.apply(ContextMiddleware).forRoutes('*');
   }
 }

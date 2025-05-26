@@ -15,6 +15,11 @@ export class PortfolioMarketDto {
   stocks?: PriceDto;
 }
 
+export class SavePortfolioDto {
+  @ApiProperty()
+  description?: string;
+}
+
 export class PortfolioDto {
   @Expose()
   @Type(() => AssetDto)

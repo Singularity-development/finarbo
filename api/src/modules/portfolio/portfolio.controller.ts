@@ -1,7 +1,16 @@
-import { Controller, Get, ParseEnumPipe, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  ParseEnumPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
-import { PortfolioDto } from './dtos/portfolio.dto';
-import { ApiOkResponse, ApiQuery } from '@nestjs/swagger';
+import { PortfolioDto, SavePortfolioDto } from './dtos/portfolio.dto';
+import { ApiBody, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { PortfolioCurrency, toFiatCurrency } from './models/portfolio';
 
 @Controller('v1/portfolio')
@@ -26,5 +35,13 @@ export class PortfolioController {
     return this.portfolioService.getPortfolioDto(
       toFiatCurrency(portfolioCurrency ?? PortfolioCurrency.USD),
     );
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.OK)
+  @ApiBody({ type: SavePortfolioDto })
+  @ApiOkResponse({ type: PortfolioDto })
+  savePortfolio(@Body() portfolio: SavePortfolioDto) {
+    return this.portfolioService.savePortfolio(portfolio);
   }
 }

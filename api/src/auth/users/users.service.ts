@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { Role } from '../role/role.model';
 import * as bcrypt from 'bcrypt';
@@ -6,13 +6,34 @@ import { UserSaveDto } from './user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { USER_ERRORS } from './errors';
+import { RequestContextService } from '@common/middleware/request-context.service';
+import { AuthPayload } from '../auth.model';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    private readonly contextService: RequestContextService,
   ) {}
+
+  async getCurrentUser(): Promise<User> {
+    const auth = this.contextService.get<AuthPayload | undefined>('user');
+
+    if (!auth) {
+      throw new ForbiddenException('Missing auth context');
+    }
+
+    const user = await this.usersRepository.findOne({
+      where: { login: auth.email },
+    });
+
+    if (!user) {
+      throw new ForbiddenException(`Missing user with email ${auth.email}`);
+    }
+
+    return user;
+  }
 
   async findOneByLogin(login: string): Promise<User | null> {
     return await this.usersRepository.findOne({ where: { login } });

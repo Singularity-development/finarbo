@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { PortfolioDto } from './dtos/portfolio.dto';
+import { PortfolioDto, SavePortfolioDto } from './dtos/portfolio.dto';
 import portfolioMock from '../../data/portfolio.mock.json';
 import { CryptoPortfolioService } from './crypto-portfolio.service';
 import { Market } from '@common/models/market.model';
 import { DollarApiService } from 'src/providers/dollar-api/dollar-api.service';
 import { LocalPortfolioService } from './local-portfolio.service';
 import { AssetType } from '@common/models/asset.model';
-import { CurrencyPortfolioService } from './currency-portfolio.service';
-import { Portfolio } from './models/portfolio';
+import { Portfolio as PortfolioModel } from './models/portfolio';
 import { Asset } from './models/asset';
 import { InputPortfolioDto } from './dtos/input-portfolio.dto';
 import { Mapper } from '@common/util/mapper';
 import { FiatCurrency } from '@common/models/fiat-currency.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Portfolio } from './models/portfolio.entity';
+import { UsersService } from 'src/auth/users/users.service';
+import { CurrencyPortfolioService } from './currency-portfolio.service';
 
 @Injectable()
 export class PortfolioService {
   constructor(
+    @InjectRepository(Portfolio)
+    private readonly portfolioRepository: Repository<Portfolio>,
     private readonly dollarApiService: DollarApiService,
     private readonly cryptoPortfolioService: CryptoPortfolioService,
     private readonly localPortfolioService: LocalPortfolioService,
     private readonly currencyPortfolioService: CurrencyPortfolioService,
+    private readonly userService: UsersService,
   ) {}
+
+  async savePortfolio(savePortfolio: SavePortfolioDto) {
+    const user = await this.userService.getCurrentUser();
+
+    const portfolio = new Portfolio();
+    portfolio.description = savePortfolio.description;
+    portfolio.users = [user];
+    portfolio.createdBy = user;
+
+    return await this.portfolioRepository.save(portfolio);
+  }
 
   async getPortfolioDto(
     targetCurrency = FiatCurrency.USD,
@@ -35,7 +53,9 @@ export class PortfolioService {
     return portfolioDto;
   }
 
-  async getPortfolio(targetCurrency = FiatCurrency.USD): Promise<Portfolio> {
+  async getPortfolio(
+    targetCurrency = FiatCurrency.USD,
+  ): Promise<PortfolioModel> {
     const input = portfolioMock as InputPortfolioDto; // TODO
 
     const assets = await this.mapAssets(input);
@@ -43,7 +63,7 @@ export class PortfolioService {
     const dollarExchange =
       await this.dollarApiService.getAvgStockExchangeRate();
 
-    return new Portfolio(assets, dollarExchange, targetCurrency);
+    return new PortfolioModel(assets, dollarExchange, targetCurrency);
   }
 
   async mapAssets(portfolio: InputPortfolioDto): Promise<Asset[]> {

@@ -5,9 +5,17 @@ import { CryptoPortfolioService } from './crypto-portfolio.service';
 import { PortfolioController } from './portfolio.controller';
 import { LocalPortfolioService } from './local-portfolio.service';
 import { CurrencyPortfolioService } from './currency-portfolio.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Portfolio } from './models/portfolio.entity';
+import { Asset } from './models/asset.entity';
+import { UsersModule } from 'src/auth/users/users.module';
 
 @Module({
-  imports: [ProvidersModule],
+  imports: [
+    ProvidersModule,
+    UsersModule,
+    TypeOrmModule.forFeature([Portfolio, Asset]),
+  ],
   controllers: [PortfolioController],
   providers: [
     PortfolioService,
