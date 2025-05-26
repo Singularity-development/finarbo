@@ -13,12 +13,12 @@ export type Profile = {
 const authApi = coreApi
   .enhanceEndpoints({ addTagTypes: ["User"] })
   .injectEndpoints({
-    endpoints: (builder) => ({
+    endpoints: builder => ({
       signIn: builder.mutation<
         { accessToken: string; refreshToken: string },
         { login: string; password: string }
       >({
-        query: (data) => ({
+        query: data => ({
           url: `signin`,
           method: HTTP_METHODS.POST,
           data,
@@ -29,7 +29,7 @@ const authApi = coreApi
         void,
         { email: string; username: string; password: string }
       >({
-        query: (data) => ({
+        query: data => ({
           url: `signup`,
           method: HTTP_METHODS.POST,
           data,

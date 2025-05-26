@@ -9,7 +9,7 @@ const baseUrl = "analyze";
 const analysisApi = coreApi
   .enhanceEndpoints({ addTagTypes: ["Analysis", "Assets"] })
   .injectEndpoints({
-    endpoints: (builder) => ({
+    endpoints: builder => ({
       getRuleResults: builder.query<Record<string, RuleResult>, void>({
         query: () => ({
           url: `v1/${baseUrl}/rules`,
@@ -19,7 +19,7 @@ const analysisApi = coreApi
         providesTags: ["Analysis"],
       }),
       getPortfolioAssets: builder.query<Asset[], RuleType>({
-        query: (rule) => ({
+        query: rule => ({
           url: `v1/${baseUrl}/rules/${rule}/assets`,
           method: HTTP_METHODS.GET,
         }),

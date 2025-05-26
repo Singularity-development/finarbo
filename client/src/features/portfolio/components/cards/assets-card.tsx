@@ -9,13 +9,13 @@ const AssetsCard = ({ assets = [] }: { assets?: Asset[] }) => {
 
   const total = assets.length ?? 0;
   const profit = useMemo(() => {
-    return assets.filter((x) => (x.result?.value ?? 0) > 0).length;
+    return assets.filter(x => (x.result?.value ?? 0) > 0).length;
   }, [assets]);
   const none = useMemo(() => {
-    return assets.filter((x) => (x.result?.value ?? 0) === 0).length;
+    return assets.filter(x => (x.result?.value ?? 0) === 0).length;
   }, [assets]);
   const losses = useMemo(() => {
-    return assets.filter((x) => (x.result?.value ?? 0) < 0).length;
+    return assets.filter(x => (x.result?.value ?? 0) < 0).length;
   }, [assets]);
 
   const profitPercentage = total !== 0 ? (profit / total) * 100 : 0;

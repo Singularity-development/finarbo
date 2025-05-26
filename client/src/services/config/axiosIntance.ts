@@ -1,18 +1,13 @@
 import axios from "axios";
 import { getApiUrl } from "./api.model";
-import {
-  getAccessToken,
-  getRefreshToken,
-  saveAccessToken,
-  saveRefreshToken,
-} from "../util/token.util";
+import { getAccessToken } from "../util/token.util";
 
 const api = axios.create({
   baseURL: getApiUrl(),
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(config => {
   const accessToken = getAccessToken();
 
   if (accessToken) {
@@ -23,8 +18,8 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  response => response,
+  async error => {
     const originalRequest = error.config;
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

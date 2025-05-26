@@ -32,7 +32,7 @@ const RiskQuotes = ({ riskResult }: { riskResult: RuleResult }) => {
 
   return (
     <Slider
-      slides={quotes.map((quote) => (
+      slides={quotes.map(quote => (
         <QuoteBlock quote={quote.quote} author={quote.author} />
       ))}
     />
