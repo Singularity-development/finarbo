@@ -10,8 +10,11 @@
     "local": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "prettier:format": "prettier --write .",
+    "prettier:check": "prettier --check .",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist",
+    "prepare": "cd .. && husky install"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
@@ -55,12 +58,22 @@
     "@types/react-world-flags": "^1.6.0",
     "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "gh-pages": "^6.3.0",
     "globals": "^15.15.0",
+    "prettier": "^3.5.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx,jsx}": [
+      "npm run prettier:format",
+      "npm run lint"
+    ],
+    "src/**/*.{json,css,md}": "npm run prettier:format"
   }
 }

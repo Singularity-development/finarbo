@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     if (!isAuthenticated) {
-      const ignore = PUBLIC_ROUTES.map((x) => `/${x.path}`).includes(
+      const ignore = PUBLIC_ROUTES.map(x => `/${x.path}`).includes(
         location.pathname
       );
       if (ignore) {
@@ -90,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     sigInRequest({
       login: email,
       password,
-    }).then(async (res) => {
+    }).then(async res => {
       if (!res.data) {
         throw new Error("Login failed");
       }

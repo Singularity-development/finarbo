@@ -47,18 +47,18 @@ const Portfolio = () => {
 
     if (tab === "crypto") {
       setAssets(
-        portfolio?.assets.filter((x) => x.market === Market.CRYPTO) ?? []
+        portfolio?.assets.filter(x => x.market === Market.CRYPTO) ?? []
       );
       return;
     }
 
     if (tab === "local") {
-      setAssets(portfolio?.assets.filter((x) => x.market === Market.ARG) ?? []);
+      setAssets(portfolio?.assets.filter(x => x.market === Market.ARG) ?? []);
       return;
     }
 
     if (tab === "external") {
-      setAssets(portfolio?.assets.filter((x) => x.market === Market.USA) ?? []);
+      setAssets(portfolio?.assets.filter(x => x.market === Market.USA) ?? []);
       return;
     }
   };
@@ -69,7 +69,7 @@ const Portfolio = () => {
       <Tabs defaultValue={DEFAULT.tab} className="space-y-2">
         <div className="flex items-center justify-between">
           <TabsList className="text-gray-400">
-            {TABS.map((tab) => (
+            {TABS.map(tab => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
@@ -82,7 +82,7 @@ const Portfolio = () => {
           </TabsList>
         </div>
 
-        {TABS.map((tab) => (
+        {TABS.map(tab => (
           <TabsContent key={tab.value} value={tab.value}>
             <AssetTable
               assets={assets}

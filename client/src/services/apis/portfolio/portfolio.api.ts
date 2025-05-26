@@ -8,9 +8,9 @@ const baseUrl = "portfolio";
 const portfolioApi = coreApi
   .enhanceEndpoints({ addTagTypes: ["Portfolio"] })
   .injectEndpoints({
-    endpoints: (builder) => ({
+    endpoints: builder => ({
       getPortfolio: builder.query<Portfolio, PortfolioCurrency | undefined>({
-        query: (currency) => ({
+        query: currency => ({
           url: `v1/${baseUrl}`,
           method: HTTP_METHODS.GET,
           params: { portfolioCurrency: currency },

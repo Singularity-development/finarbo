@@ -16,7 +16,7 @@ const Slider = <T extends ReactElement>({
       loop: true,
     },
     [
-      (slider) => {
+      slider => {
         let timeout: ReturnType<typeof setTimeout>;
         let mouseOver = false;
         function clearNextTimeout() {
