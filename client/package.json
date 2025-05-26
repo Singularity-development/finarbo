@@ -14,7 +14,7 @@
     "prettier:check": "prettier --check .",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
-    "prepare": "cd .. && husky install"
+    "prepare": "cd .. && husky"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
