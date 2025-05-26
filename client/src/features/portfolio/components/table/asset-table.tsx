@@ -53,7 +53,7 @@ const AssetTable = ({
       return <SkeletonAssetTable rows={loading.skeletonRows} />;
     }
 
-    return assets.map((asset) => (
+    return assets.map(asset => (
       <TableRow key={`${asset.symbol}`} style={{ height: 53 }}>
         <TableCell>
           <AssetBadge type={asset.type} />

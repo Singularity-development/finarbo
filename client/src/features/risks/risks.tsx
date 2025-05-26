@@ -23,7 +23,7 @@ const Risks = () => {
       return [];
     }
 
-    return Object.values(ruleResults).map((ruleResult) => {
+    return Object.values(ruleResults).map(ruleResult => {
       const Icon = RULE_ICONS[ruleResult.code];
 
       return (
