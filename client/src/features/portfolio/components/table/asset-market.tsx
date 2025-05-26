@@ -11,17 +11,17 @@ import {
 
 const MARKETS: Record<Market, ReactElement> = {
   [Market.ARG]: (
-    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 overflow-hidden">
-      <Flag alt="Arg flag" code="AR" className="h-4 w-4 object-cover" />
+    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 overflow-hidden">
+      <Flag alt="Arg flag" code="AR" className="h-6 w-6 object-cover" />
     </span>
   ),
   [Market.USA]: (
-    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 overflow-hidden">
-      <Flag alt="Usa flag" code="US" className="h-4 w-4 object-cover" />
+    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 overflow-hidden">
+      <Flag alt="Usa flag" code="US" className="h-6 w-6 object-cover" />
     </span>
   ),
-  [Market.CRYPTO]: <Bitcoin className="text-yellow-500 h-4 w-4" />,
-  [Market.OTHER]: <Globe className="text-gray-500 h-4 w-4" />,
+  [Market.CRYPTO]: <Bitcoin className="text-yellow-500 h-6 w-6" />,
+  [Market.OTHER]: <Globe className="text-gray-500 h-6 w-6" />,
 };
 
 const AssetMarket = ({ market = Market.USA }: { market?: Market }) => {
