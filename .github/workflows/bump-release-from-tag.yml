@@ -72,18 +72,11 @@ jobs:
       - name: Pull latest changes
         run: git pull origin main
 
-      - name: Copy bumped files from release dirs
-        run: |
-          cp api/package.json ./api/package.json
-          cp api/package-lock.json ./api/package-lock.json
-          cp client/package.json ./client/package.json
-          cp client/package-lock.json ./client/package-lock.json
-
       - name: Commit and push version bump
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add api/package.json api/package-lock.json client/package.json client/package-lock.json
           git commit -m "chore: bump version to ${{ needs.release-api.outputs.version }}"
           git push
 
