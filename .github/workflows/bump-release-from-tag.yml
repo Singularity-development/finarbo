@@ -26,7 +26,13 @@ jobs:
         run: |
           TAG=${{ github.ref_name }}
           VERSION=${TAG#v}
+          BASE_VERSION=${VERSION%%-*}
+          MAJOR=${BASE_VERSION%%.*}
+          REST=${BASE_VERSION#*.}
+          MINOR=${REST%%.*}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "MAJOR=$MAJOR" >> $GITHUB_ENV
+          echo "MINOR=$MINOR" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump API package.json version to ${{ env.VERSION }}
@@ -51,3 +57,8 @@ jobs:
           git push origin :refs/tags/${{ github.ref_name }} || true
           git tag ${{ github.ref_name }}
           git push origin ${{ github.ref_name }}
+
+      - name: Create and push release branch
+        run: |
+          git checkout -b release/$MAJOR.$MINOR.X || git checkout release/$MAJOR.$MINOR.X
+          git push origin release/$MAJOR.$MINOR.X
