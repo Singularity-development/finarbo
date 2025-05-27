@@ -1,4 +1,4 @@
-name: Api docker publish 🐳
+name: Api docker publish
 
 on:
   release:
@@ -36,6 +36,7 @@ jobs:
         run: npm test
 
   build-and-push:
+    needs: api-test
     runs-on: ubuntu-latest
 
     permissions:
@@ -45,6 +46,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set image name
+        id: repo
+        run: |
+          echo "IMAGE=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Log in to GitHub Docker registry
         uses: docker/login-action@v3
@@ -60,5 +66,5 @@ jobs:
           file: ./api/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/${{ env.IMAGE }}:latest
+            ghcr.io/${{ env.IMAGE }}:${{ github.ref_name }}
