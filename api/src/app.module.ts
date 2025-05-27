@@ -11,6 +11,7 @@ import dataBaseConfig from '@config/data-base.config';
 import { RequestContextService } from '@common/middleware/request-context.service';
 import corsConfig from '@config/cors.config';
 import appConfig from '@config/app.config';
+import { InfoModule } from '@modules/info/info.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import appConfig from '@config/app.config';
     PortfolioModule,
     AnalysisModule,
     AuthModule,
+    InfoModule,
   ],
   providers: [
     {
