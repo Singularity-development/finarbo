@@ -3,7 +3,7 @@
   "description": "portfolio",
   "author": "Singularity studio",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.4-alpha",
   "type": "module",
   "scripts": {
     "dev": "vite",
