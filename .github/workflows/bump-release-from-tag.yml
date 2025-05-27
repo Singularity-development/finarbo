@@ -1,0 +1,76 @@
+name: Bump Release from Tag
+
+on:
+  push:
+    tags: ["*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release-api:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./api
+    outputs:
+      version: ${{ steps.extract.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ vars.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+
+      - name: Extract version from tag
+        id: extract
+        run: |
+          TAG=${{ github.ref_name }}
+          VERSION=${TAG#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump api package.json version to ${{ github.ref_name }}
+        run: npm version $VERSION --no-git-tag-version
+
+  release-client:
+    needs: release-api
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ vars.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Bump client package.json version to ${{ github.ref_name }}
+        run: npm version ${{ needs.release-api.outputs.version }} --no-git-tag-version
+
+  commit-release:
+    needs: [release-api, release-client]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Commit and push version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add api/package.json api/package-lock.json client/package.json client/package-lock.json
+          git commit -m "chore: bump version to ${{ needs.release-api.outputs.version }}"
+          git push
