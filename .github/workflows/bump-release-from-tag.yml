@@ -66,11 +66,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Pull latest changes
+        run: git pull origin main
+
+      - name: Copy bumped files from release dirs
+        run: |
+          cp api/package.json ./api/package.json
+          cp api/package-lock.json ./api/package-lock.json
+          cp client/package.json ./client/package.json
+          cp client/package-lock.json ./client/package-lock.json
 
       - name: Commit and push version bump
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add api/package.json api/package-lock.json client/package.json client/package-lock.json
+          git add .
           git commit -m "chore: bump version to ${{ needs.release-api.outputs.version }}"
           git push
+
+      - name: Move tag to version bump commit
+        run: |
+          git tag -d ${{ github.ref_name }} || true
+          git push origin :refs/tags/${{ github.ref_name }} || true
+          git tag ${{ github.ref_name }}
+          git push origin ${{ github.ref_name }}
