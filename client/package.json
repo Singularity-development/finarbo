@@ -10,7 +10,7 @@
     "local": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "prettier:format": "prettier --write",
+    "prettier:format": "prettier --write .",
     "prettier:check": "prettier --check .",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",

@@ -2,14 +2,14 @@
 module.exports = {
   // Client files
   'client/src/**/*.{js,ts,tsx,jsx}': [
-    'npm --prefix client run prettier:format',
-    'npm --prefix client run lint',
+    'prettier --write --no-error-on-unmatched-pattern',
+    'eslint --fix',
   ],
-  'client/src/**/*.{json,css,md}': ['npm --prefix client run prettier:format'],
+  'client/src/**/*.{json,css,md}': ['prettier --write --no-error-on-unmatched-pattern'],
 
   // API files
   'api/src/**/*.{js,ts}': [
-    'npm --prefix api run prettier:format',
-    'npm --prefix api run lint',
+    'prettier --write --no-error-on-unmatched-pattern',
+    'eslint --fix',
   ],
 };
