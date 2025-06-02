@@ -18,7 +18,7 @@ export const useErrorParser = () => {
 
     return code
       ? t(code, { ns: "errors" })
-      : message ?? t("UNKNOWN", { ns: "errors" });
+      : (message ?? t("UNKNOWN", { ns: "errors" }));
   };
 
   const translateError = (error: ErrorToParse): ErrorDetail | string => {

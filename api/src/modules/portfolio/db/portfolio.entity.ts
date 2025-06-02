@@ -6,11 +6,13 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AssetEntity } from './asset.entity';
 
 @Entity('portfolios')
-export class Portfolio {
+export class PortfolioEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -31,9 +33,12 @@ export class Portfolio {
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   createdBy: User;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 32 })
   description?: string;
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(() => AssetEntity, (asset) => asset.portfolio)
+  assets: AssetEntity[];
 }

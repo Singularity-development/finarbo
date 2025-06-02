@@ -7,7 +7,7 @@ const Header = () => {
   const { t } = useTranslation();
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b px-6">
+    <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b px-6 bg-[#0a0c10]">
       <Link to="/portfolio" className="flex gap-2">
         <Logo />
 

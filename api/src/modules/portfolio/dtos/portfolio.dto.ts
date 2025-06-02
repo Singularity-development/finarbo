@@ -1,7 +1,9 @@
 import { Expose, Type } from 'class-transformer';
-import { AssetDto } from './asset.dto';
+import { ResultAssetDto } from './asset.dto';
 import { PriceDto } from './price.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { BasicUserDto } from 'src/auth/users/user.dto';
+import { IsString, Length } from 'class-validator';
 
 export class PortfolioMarketDto {
   @Expose()
@@ -20,11 +22,18 @@ export class SavePortfolioDto {
   description?: string;
 }
 
+export class RenamePortfolioDto {
+  @IsString()
+  @Length(1, 32)
+  @ApiProperty()
+  description: string;
+}
+
 export class PortfolioDto {
   @Expose()
-  @Type(() => AssetDto)
-  @ApiProperty({ type: [AssetDto] })
-  assets: AssetDto[];
+  @Type(() => ResultAssetDto)
+  @ApiProperty({ type: [ResultAssetDto] })
+  assets: ResultAssetDto[];
 
   @Expose()
   @Type(() => PriceDto)
@@ -52,4 +61,23 @@ export class PortfolioDto {
   @Type(() => PortfolioMarketDto)
   @ApiProperty()
   markets: PortfolioMarketDto;
+}
+
+export class PortfolioSummaryDto {
+  @Expose()
+  @ApiProperty()
+  id: string;
+
+  @Expose()
+  @Type(() => BasicUserDto)
+  @ApiProperty()
+  createdBy: BasicUserDto;
+
+  @Expose()
+  @ApiProperty()
+  description?: string;
+
+  @Expose()
+  @ApiProperty()
+  createdAt: Date;
 }

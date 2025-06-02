@@ -23,7 +23,7 @@ const RuleResultCard = ({
       return;
     }
 
-    return Object.values(results).map((result) => {
+    return Object.values(results).map(result => {
       const severity = result.severity;
       const Icon = RULE_ICONS[result.code];
 

@@ -1,0 +1,39 @@
+name: Periodically api tests
+
+on:
+  schedule:
+    # At 12:00 AM, only on Friday
+    - cron: "0 0 * * FRI"
+
+  workflow_dispatch:
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ vars.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+
+      - name: Cache node_modules folder
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: api/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('api/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Run tests
+        run: npm test

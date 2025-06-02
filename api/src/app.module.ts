@@ -12,6 +12,7 @@ import corsConfig from '@config/cors.config';
 import appConfig from '@config/app.config';
 import { ContextMiddleware } from '@common/middleware/context.middleware';
 import { ContextModule } from '@common/middleware/context.module';
+import { InfoModule } from '@modules/info/info.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ContextModule } from '@common/middleware/context.module';
     AnalysisModule,
     AuthModule,
     ContextModule,
+    InfoModule,
   ],
   providers: [
     {

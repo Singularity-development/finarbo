@@ -5,6 +5,7 @@ import {
 import { Price } from '@common/models/price.model';
 import { Asset } from './asset';
 import { Market } from '@common/models/market.model';
+import { groupByKey } from '@common/util/array.util';
 
 export class Portfolio {
   private _assets: Asset[];
@@ -20,7 +21,7 @@ export class Portfolio {
     dollarExchange: number,
     targetCurrency = FiatCurrency.USD,
   ) {
-    this._assets = assets;
+    this._assets = this.mapAssets(assets);
     this._exchange = dollarExchange;
     this._date = new Date();
 
@@ -68,6 +69,64 @@ export class Portfolio {
 
   get markets(): PortfolioMarket | undefined {
     return this._markets;
+  }
+
+  private mapAssets(assets: Asset[]): Asset[] {
+    const assetsBySymbol = groupByKey(assets, (x) => x.symbol);
+
+    const mergedAssets: Asset[] = Object.entries(assetsBySymbol).map((x) => {
+      const [symbol, assets] = x;
+
+      if (assets.length === 1) {
+        return assets[0];
+      }
+
+      const firstAsset = assets[0];
+      const totalAmount = assets.reduce((sum, asset) => sum + asset.amount, 0);
+      const totalResult =
+        assets.reduce(
+          (sum, asset) => sum + (asset.result?.value ?? 0) * asset.amount,
+          0,
+        ) / totalAmount;
+      const acp =
+        assets.reduce((sum, asset) => {
+          return sum + asset.amount * asset.acp.value;
+        }, 0) / totalAmount;
+      const lastUpdated = new Date(
+        Math.max(
+          ...assets.map((y) =>
+            y.updateDate ? new Date(y.updateDate).getTime() : 0,
+          ),
+        ),
+      );
+      const lastPrice =
+        assets.reduce((latestSoFar, current) => {
+          return (current.updateDate ?? new Date()) >
+            (current.updateDate ?? new Date())
+            ? current
+            : latestSoFar;
+        }).lastPrice ?? assets.filter((x) => x.lastPrice)[0]?.lastPrice;
+
+      const mergedAsset = new Asset(
+        symbol,
+        firstAsset.type,
+        totalAmount,
+        assets.flatMap((asset) => asset.brokers),
+        firstAsset.name,
+        firstAsset.slug,
+        firstAsset.market,
+        new Price(totalResult, firstAsset.currency ?? FiatCurrency.USD),
+        lastPrice,
+        lastUpdated,
+        firstAsset.currency,
+      );
+
+      mergedAsset.setAcp(acp, firstAsset.currency ?? FiatCurrency.OTHER);
+
+      return mergedAsset;
+    });
+
+    return mergedAssets;
   }
 
   private calculateTotals(

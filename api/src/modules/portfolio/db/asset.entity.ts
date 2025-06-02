@@ -6,15 +6,16 @@ import {
   CreateDateColumn,
   Unique,
 } from 'typeorm';
-import { Portfolio } from './portfolio.entity';
 import { AssetType } from '@common/models/asset.model';
 import { Market } from '@common/models/market.model';
 import { Price } from '@common/models/price.model';
 import { FiatCurrency } from '@common/models/fiat-currency.model';
+import { PortfolioEntity } from './portfolio.entity';
+import { getNominalValueByType } from 'src/providers/byma/instrument.util';
 
 @Entity('assets')
 @Unique(['symbol', 'portfolio', 'broker', 'market'])
-export class Asset {
+export class AssetEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -28,7 +29,7 @@ export class Asset {
   amount: number;
 
   @Column(() => Price, { prefix: 'acp' })
-  acp?: Price;
+  acp: Price;
 
   @Column(() => Price, { prefix: 'total' })
   total: Price;
@@ -45,21 +46,24 @@ export class Asset {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => Portfolio, { onDelete: 'CASCADE' })
-  portfolio: Portfolio;
+  @ManyToOne(() => PortfolioEntity, {
+    onDelete: 'CASCADE',
+  })
+  portfolio: PortfolioEntity;
 
-  private constructor(portfolio: Portfolio) {
+  private constructor(portfolio: PortfolioEntity) {
     this.portfolio = portfolio;
   }
 
   static createCurrencyAsset(params: {
     currency: string;
     amount: number;
-    portfolio: Portfolio;
+    portfolio: PortfolioEntity;
     operatedDate: Date;
     broker?: string;
-  }): Asset {
-    const asset = new Asset(params.portfolio);
+    acp?: number;
+  }): AssetEntity {
+    const asset = new AssetEntity(params.portfolio);
     asset.symbol = params.currency;
     asset.type = AssetType.CURRENCY;
     asset.operatedDate = params.operatedDate;
@@ -71,7 +75,11 @@ export class Asset {
       currencyKey in FiatCurrency
         ? FiatCurrency[currencyKey]
         : FiatCurrency.OTHER;
-    asset.acp = new Price(1, fiatCurrency);
+    asset.acp = new Price(
+      fiatCurrency === FiatCurrency.ARS ? 1 : (params.acp ?? 1),
+      fiatCurrency,
+    );
+
     asset.total = new Price(params.amount, fiatCurrency);
     return asset;
   }
@@ -81,12 +89,12 @@ export class Asset {
     amount: number;
     assetType: AssetType;
     acp: Price;
-    portfolio: Portfolio;
+    portfolio: PortfolioEntity;
     operatedDate: Date;
     market?: Market;
     broker?: string;
-  }): Asset {
-    const asset = new Asset(params.portfolio);
+  }): AssetEntity {
+    const asset = new AssetEntity(params.portfolio);
     asset.symbol = params.symbol;
     asset.type = params.assetType;
     asset.operatedDate = params.operatedDate;
@@ -95,10 +103,9 @@ export class Asset {
 
     asset.amount = params.amount;
     asset.acp = params.acp;
-    asset.total = new Price(
-      params.amount * params.acp.value,
-      params.acp.currency,
-    );
+
+    const nominalPrice = getNominalValueByType(params.acp.value, asset.type);
+    asset.total = new Price(params.amount * nominalPrice, params.acp.currency);
     return asset;
   }
 }

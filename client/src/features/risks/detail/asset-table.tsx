@@ -50,17 +50,13 @@ const AssetTable = ({
       return <SkeletonAssetTable rows={loading.skeletonRows} />;
     }
 
-    return assets.map((asset) => (
+    return assets.map(asset => (
       <TableRow key={`${asset.symbol}`} style={{ height: 53 }}>
+        <TableCell className="font-medium text-white">
+          <AssetName symbol={asset.symbol} name={asset.name} />
+        </TableCell>
         <TableCell>
           <AssetBadge type={asset.type} />
-        </TableCell>
-        <TableCell className="font-medium text-white">
-          <AssetName
-            symbol={asset.symbol}
-            name={asset.name}
-            type={asset.type}
-          />
         </TableCell>
         <TableCell className="text-center">
           <AssetMarket market={asset.market} />
@@ -92,10 +88,10 @@ const AssetTable = ({
           <TableHeader>
             <TableRow>
               <TableHead className="text-gray-400">
-                {t("attributes.type", { ns: "portfolio" })}
+                {t("attributes.asset", { ns: "portfolio" })}
               </TableHead>
               <TableHead className="text-gray-400">
-                {t("attributes.asset", { ns: "portfolio" })}
+                {t("attributes.type", { ns: "portfolio" })}
               </TableHead>
               <TableHead className="text-gray-400 text-center">
                 {t("attributes.market", { ns: "portfolio" })}

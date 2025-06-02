@@ -1,0 +1,48 @@
+name: Api Linters
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "api/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  api-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ vars.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+
+      - name: Cache node_modules folder
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: api/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('api/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Linters
+        run: |
+          npm run prettier:check
+          npm run lint:check

@@ -1,91 +1,137 @@
-import { Injectable } from '@nestjs/common';
-import { PortfolioDto, SavePortfolioDto } from './dtos/portfolio.dto';
-import portfolioMock from '../../data/portfolio.mock.json';
-import { CryptoPortfolioService } from './crypto-portfolio.service';
-import { Market } from '@common/models/market.model';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { PortfolioSummaryDto, SavePortfolioDto } from './dtos/portfolio.dto';
 import { DollarApiService } from 'src/providers/dollar-api/dollar-api.service';
-import { LocalPortfolioService } from './local-portfolio.service';
-import { AssetType } from '@common/models/asset.model';
-import { Portfolio as PortfolioModel } from './models/portfolio';
-import { Asset } from './models/asset';
-import { InputPortfolioDto } from './dtos/input-portfolio.dto';
+import { Portfolio } from './models/portfolio';
 import { Mapper } from '@common/util/mapper';
 import { FiatCurrency } from '@common/models/fiat-currency.model';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Portfolio } from './models/portfolio.entity';
+import { FindOptionsRelations, Repository } from 'typeorm';
+import { PortfolioEntity } from './db/portfolio.entity';
 import { UsersService } from 'src/auth/users/users.service';
-import { CurrencyPortfolioService } from './currency-portfolio.service';
+import { AssetService } from './asset.service';
+import { SaveAssetDto, AssetDto, SaveCurrencyAssetDto } from './dtos/asset.dto';
 
 @Injectable()
 export class PortfolioService {
   constructor(
-    @InjectRepository(Portfolio)
-    private readonly portfolioRepository: Repository<Portfolio>,
+    @InjectRepository(PortfolioEntity)
+    private readonly portfolioRepository: Repository<PortfolioEntity>,
     private readonly dollarApiService: DollarApiService,
-    private readonly cryptoPortfolioService: CryptoPortfolioService,
-    private readonly localPortfolioService: LocalPortfolioService,
-    private readonly currencyPortfolioService: CurrencyPortfolioService,
     private readonly userService: UsersService,
+    private readonly assetService: AssetService,
   ) {}
 
   async savePortfolio(savePortfolio: SavePortfolioDto) {
     const user = await this.userService.getCurrentUser();
 
-    const portfolio = new Portfolio();
-    portfolio.description = savePortfolio.description;
+    const portfolio = new PortfolioEntity();
+    portfolio.description =
+      savePortfolio.description ?? `${user.username}'s portfolio`;
     portfolio.users = [user];
     portfolio.createdBy = user;
 
-    return await this.portfolioRepository.save(portfolio);
+    return Mapper.mapToDto(
+      await this.portfolioRepository.save(portfolio),
+      PortfolioSummaryDto,
+    );
   }
 
-  async getPortfolioDto(
-    targetCurrency = FiatCurrency.USD,
-  ): Promise<PortfolioDto> {
-    const portfolio = await this.getPortfolio(targetCurrency);
+  async deletePortfolio(id: string): Promise<void> {
+    const portfolio = await this.getPortfolioById(id);
 
-    const portfolioDto = Mapper.mapToDto(
-      portfolio,
-      PortfolioDto,
-    ) as PortfolioDto;
+    await this.portfolioRepository.remove(portfolio);
+  }
 
-    return portfolioDto;
+  async changePortfolioDescription(
+    id: string,
+    description: string,
+  ): Promise<PortfolioSummaryDto> {
+    const portfolio = await this.getPortfolioById(id);
+
+    portfolio.description = description;
+
+    return Mapper.mapToDto(
+      await this.portfolioRepository.save(portfolio),
+      PortfolioSummaryDto,
+    ) as PortfolioSummaryDto;
+  }
+
+  async getUserPortfolios(): Promise<PortfolioSummaryDto[]> {
+    const user = await this.userService.getCurrentUser();
+
+    if (!user) {
+      return [];
+    }
+
+    const portfolios = this.portfolioRepository.find({
+      where: { users: { id: user.id } },
+      relations: ['createdBy'],
+    });
+
+    return Mapper.mapToDto(
+      portfolios,
+      PortfolioSummaryDto,
+    ) as PortfolioSummaryDto[];
   }
 
   async getPortfolio(
+    portfolioId: string,
     targetCurrency = FiatCurrency.USD,
-  ): Promise<PortfolioModel> {
-    const input = portfolioMock as InputPortfolioDto; // TODO
+  ): Promise<Portfolio> {
+    const portfolio = await this.getPortfolioById(portfolioId, {
+      assets: true,
+    });
 
-    const assets = await this.mapAssets(input);
-
-    const dollarExchange =
-      await this.dollarApiService.getAvgStockExchangeRate();
-
-    return new PortfolioModel(assets, dollarExchange, targetCurrency);
-  }
-
-  async mapAssets(portfolio: InputPortfolioDto): Promise<Asset[]> {
-    const cryptos = portfolio.portfolio.filter(
-      (x) => x.market === Market.CRYPTO,
-    );
-    const localInvestments = portfolio.portfolio.filter(
-      (x) => x.market === Market.ARG,
-    );
-    // const usaInvestments = portfolio.portfolio.filter(
-    //   (x) => x.market === Market.USA,
-    // ); // TODO
-    const currencies = portfolio.portfolio.filter(
-      (x) => x.type === AssetType.CURRENCY,
-    );
-
-    const [cryptoAssets, localAssets, currencyAssets] = await Promise.all([
-      await this.cryptoPortfolioService.mapCryptoAssets(cryptos),
-      await this.localPortfolioService.mapLocalAssets(localInvestments),
-      await this.currencyPortfolioService.mapCurrenciesAssets(currencies),
+    const [assets, dollarExchange] = await Promise.all([
+      this.assetService.mapAssets(portfolio),
+      this.dollarApiService.getAvgStockExchangeRate(),
     ]);
 
-    return [...cryptoAssets, ...localAssets, ...currencyAssets];
+    return new Portfolio(assets, dollarExchange, targetCurrency);
+  }
+
+  async getPortfolioById(
+    id: string,
+    relations?: FindOptionsRelations<PortfolioEntity>,
+  ): Promise<PortfolioEntity> {
+    const user = await this.userService.getCurrentUser();
+
+    if (!user) {
+      throw new ForbiddenException();
+    }
+
+    const portfolio = await this.portfolioRepository.findOne({
+      where: { id },
+      relations: relations
+        ? { ...relations, createdBy: true }
+        : { createdBy: true },
+    });
+
+    if (!portfolio) {
+      throw new NotFoundException('Portfolio not found');
+    }
+
+    if (portfolio.createdBy.id !== user.id) {
+      throw new ForbiddenException('You are not the owner of this portfolio');
+    }
+
+    return portfolio;
+  }
+
+  async saveAsset(portfolioId: string, asset: SaveAssetDto): Promise<AssetDto> {
+    const portfolio = await this.getPortfolioById(portfolioId);
+    return await this.assetService.saveAsset(portfolio, asset);
+  }
+
+  async saveCurrencyAsset(
+    portfolioId: string,
+    asset: SaveCurrencyAssetDto,
+  ): Promise<AssetDto> {
+    const portfolio = await this.getPortfolioById(portfolioId);
+    return await this.assetService.saveCurrencyAsset(portfolio, asset);
   }
 }

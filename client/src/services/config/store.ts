@@ -11,7 +11,7 @@ const appReducers = combineReducers({
 export const setupStore = (preloadedState?: Omit<RootState, "api">) => {
   return configureStore({
     reducer: appReducers,
-    middleware: (getDefaultMiddleware) =>
+    middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
         serializableCheck: false,
       }).concat(coreApi.middleware),

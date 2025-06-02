@@ -14,9 +14,12 @@ export class AnalysisService {
     private readonly portfolioService: PortfolioService,
   ) {}
 
-  async analyzePortfolio(): Promise<Record<string, ResultDto>> {
+  async analyzePortfolio(
+    portfolioId: string,
+  ): Promise<Record<string, ResultDto>> {
     const severityOrder = Object.values(Severity);
-    const portfolioToAnalyze = await this.portfolioService.getPortfolio();
+    const portfolioToAnalyze =
+      await this.portfolioService.getPortfolio(portfolioId);
     const results =
       await this.rulesService.analyzePortfolio(portfolioToAnalyze);
     return toRecord(
@@ -28,8 +31,12 @@ export class AnalysisService {
     );
   }
 
-  async getAssetInvolvedByRule(rule: RuleType): Promise<AssetDto[]> {
-    const portfolioToAnalyze = await this.portfolioService.getPortfolio();
+  async getAssetInvolvedByRule(
+    portfolioId: string,
+    rule: RuleType,
+  ): Promise<AssetDto[]> {
+    const portfolioToAnalyze =
+      await this.portfolioService.getPortfolio(portfolioId);
     return this.rulesService.getAssetInvolvedByRule(portfolioToAnalyze, rule);
   }
 }

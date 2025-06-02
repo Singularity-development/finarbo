@@ -59,3 +59,17 @@ If you prefer using Docker for the database:
 ```bash
 docker-compose -f docker/postgresql.yml up -d
 ```
+
+### Server
+
+1. Build api image
+
+```bash
+docker build -t finarbo-api .
+```
+
+2. Run image
+
+```bash
+docker run --name finarbo-api-container --env-file ./.env.production -p 3000:3000 finarbo-api
+```

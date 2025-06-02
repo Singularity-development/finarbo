@@ -12,7 +12,7 @@ export class Asset {
   private _market?: Market;
   private _amount: number;
   private _lastPrice?: Price;
-  private _acp?: Price;
+  private _acp: Price;
   private _total: Price;
   private _result?: Price;
   private _percentageResult?: number;
@@ -113,8 +113,12 @@ export class Asset {
     this.recalculate(currency);
   }
 
-  setResult(result: number, currency: FiatCurrency) {
+  setResult(result: number, currency: FiatCurrency, brokerName?: string) {
     this._result = new Price(result, currency);
+    const broker = this.brokers.find((b) => b.name === brokerName);
+    if (broker) {
+      broker.setResult = this._result;
+    }
     this.recalculate(currency);
   }
 
@@ -156,10 +160,12 @@ export class Broker {
   private _name: string;
   private _amount: number;
   private _result?: Price;
+  private _acp?: Price;
 
-  constructor(name: string, amount: number, result?: Price) {
+  constructor(name: string, amount: number, acp?: Price, result?: Price) {
     this._name = name;
     this._amount = amount;
+    this._acp = acp;
     this._result = result;
   }
 
@@ -178,5 +184,13 @@ export class Broker {
 
   set setResult(result: Price) {
     this._result = result;
+  }
+
+  get acp(): Price | undefined {
+    return this._acp;
+  }
+
+  set setAcp(acp: Price) {
+    this._acp = acp;
   }
 }

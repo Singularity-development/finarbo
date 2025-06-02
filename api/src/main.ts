@@ -25,6 +25,7 @@ async function bootstrap() {
 
   await app.listen(appConfig.port, appConfig.hostname);
 
-  Logger.log('App', `App is running on: ${await app.getUrl()}/api`);
+  Logger.log('App', `App is running on: "${await app.getUrl()}/api".`);
 }
-bootstrap();
+
+bootstrap().catch((error) => Logger.error('App', error));

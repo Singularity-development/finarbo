@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CoinMarketService } from 'src/providers/coin-market-cap/coin-market-cap.service';
-import { toRecord } from '@common/util/array.util';
+import { groupByKey, toRecord } from '@common/util/array.util';
 import { CryptoDto } from 'src/providers/coin-market-cap/dtos/crypto.dto';
 import { FiatCurrency } from '@common/models/fiat-currency.model';
 import { AssetType } from '@common/models/asset.model';
 import { CryptoPriceDto } from 'src/providers/coin-market-cap/dtos/crypto-price.dto';
 import { Market } from '@common/models/market.model';
 import { Asset, Broker } from './models/asset';
-import { InputAssetDto } from './dtos/input-portfolio.dto';
+import { AssetEntity } from './db/asset.entity';
 
 @Injectable()
 export class CryptoPortfolioService {
@@ -15,13 +15,13 @@ export class CryptoPortfolioService {
 
   constructor(private readonly coinMarketService: CoinMarketService) {}
 
-  async mapCryptoAssets(assets: InputAssetDto[]): Promise<Asset[]> {
+  async mapCryptoAssets(assets: AssetEntity[]): Promise<Asset[]> {
     if (assets.length <= 0) {
       return [];
     }
 
     const cryptosBySymbol = await this.getCryptos();
-    const portfolioAssetsBySymbol = toRecord(assets, (x) => x.symbol);
+    const portfolioAssetsBySymbol = groupByKey(assets, (x) => x.symbol);
 
     // Map assets
     const cryptoAssets: Asset[] = assets.map((asset) =>
@@ -47,13 +47,13 @@ export class CryptoPortfolioService {
   }
 
   private createAsset(
-    asset: InputAssetDto,
+    asset: AssetEntity,
     cryptosBySymbol: Record<string, CryptoDto>,
   ): Asset {
     const crypto = cryptosBySymbol[asset.symbol];
     const broker = asset.broker ?? 'unknown';
     const assetType = asset.type ?? AssetType.OTHER;
-    const brokers = [new Broker(broker, asset.amount)];
+    const brokers = [new Broker(broker, asset.amount, asset.acp)];
 
     return new Asset(
       asset.symbol,
@@ -68,21 +68,24 @@ export class CryptoPortfolioService {
 
   private updateAssetWithMarketData(
     cryptoAsset: Asset,
-    portfolioAssetsBySymbol: Record<string, InputAssetDto>,
+    portfolioAssetsBySymbol: Record<string, AssetEntity[]>,
     cryptosQuoteBySymbol: Record<string, CryptoPriceDto>,
   ): void {
     const currency = FiatCurrency.USD;
-    const portfolioAsset = portfolioAssetsBySymbol[cryptoAsset.symbol];
-    const cryptosQuote = cryptosQuoteBySymbol[cryptoAsset.symbol];
-    const lastPrice = cryptosQuote?.quote?.usd?.price ?? 0;
-    const acp = portfolioAsset?.acp ?? 0;
-    const amount = portfolioAsset?.amount ?? 0;
-    const result = (lastPrice - acp) * amount;
+    const portfolioAssets = portfolioAssetsBySymbol[cryptoAsset.symbol];
 
-    cryptoAsset.setAcp(acp, currency);
-    cryptoAsset.setLastPrice(lastPrice, currency);
-    cryptoAsset.setResult(result, currency);
-    cryptoAsset.setUpdateDate(cryptosQuote?.quote?.usd.lastUpdated);
+    portfolioAssets.forEach((portfolioAsset) => {
+      const cryptosQuote = cryptosQuoteBySymbol[cryptoAsset.symbol];
+      const lastPrice = cryptosQuote?.quote?.usd?.price ?? 0;
+      const acp = portfolioAsset?.acp ?? 0;
+      const amount = portfolioAsset?.amount ?? 0;
+      const result = (lastPrice - acp.value) * amount;
+
+      cryptoAsset.setAcp(acp.value, acp.currency);
+      cryptoAsset.setLastPrice(lastPrice, currency);
+      cryptoAsset.setResult(result, currency, cryptoAsset.brokers[0]?.name);
+      cryptoAsset.setUpdateDate(cryptosQuote?.quote?.usd.lastUpdated);
+    });
   }
 
   private async getCryptos() {

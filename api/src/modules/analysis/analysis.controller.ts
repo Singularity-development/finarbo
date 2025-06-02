@@ -5,11 +5,11 @@ import { ResultDto } from './rules/result.dto';
 import { RuleType } from './rules/rule';
 import { AssetDto } from '@modules/portfolio/dtos/asset.dto';
 
-@Controller('v1/analyze/rules')
+@Controller('v1/portfolio')
 export class AnalysisController {
   constructor(private readonly analysisService: AnalysisService) {}
 
-  @Get()
+  @Get(':portfolioId/analysis/rules')
   @ApiExtraModels(ResultDto)
   @ApiOkResponse({
     description: 'Analysis results indexed by rule code',
@@ -20,13 +20,16 @@ export class AnalysisController {
       },
     },
   })
-  analyzePortfolio() {
-    return this.analysisService.analyzePortfolio();
+  analyzePortfolio(@Param('portfolioId') portfolioId: string) {
+    return this.analysisService.analyzePortfolio(portfolioId);
   }
 
-  @Get(':rule/assets')
+  @Get(':portfolioId/analysis/rules/:rule/assets')
   @ApiOkResponse({ type: AssetDto, isArray: true })
-  getPortfolioAssets(@Param('rule') rule: RuleType) {
-    return this.analysisService.getAssetInvolvedByRule(rule);
+  getPortfolioAssets(
+    @Param('portfolioId') portfolioId: string,
+    @Param('rule') rule: RuleType,
+  ) {
+    return this.analysisService.getAssetInvolvedByRule(portfolioId, rule);
   }
 }

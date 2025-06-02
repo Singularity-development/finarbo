@@ -1,0 +1,64 @@
+name: Bump Release from Tag
+
+on:
+  push:
+    tags: ["*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js ${{ vars.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Extract version from tag
+        id: extract
+        run: |
+          TAG=${{ github.ref_name }}
+          VERSION=${TAG#v}
+          BASE_VERSION=${VERSION%%-*}
+          MAJOR=${BASE_VERSION%%.*}
+          REST=${BASE_VERSION#*.}
+          MINOR=${REST%%.*}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "MAJOR=$MAJOR" >> $GITHUB_ENV
+          echo "MINOR=$MINOR" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump API package.json version to ${{ env.VERSION }}
+        run: npm version $VERSION --no-git-tag-version
+        working-directory: ./api
+
+      - name: Bump client package.json version to ${{ env.VERSION }}
+        run: npm version $VERSION --no-git-tag-version
+        working-directory: ./client
+
+      - name: Commit and push version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: bump version to $VERSION"
+          git push
+
+      - name: Move tag to version bump commit
+        run: |
+          git tag -d ${{ github.ref_name }} || true
+          git push origin :refs/tags/${{ github.ref_name }} || true
+          git tag ${{ github.ref_name }}
+          git push origin ${{ github.ref_name }}
+
+      - name: Create and push release branch
+        run: |
+          git checkout -b release/$MAJOR.$MINOR.X || git checkout release/$MAJOR.$MINOR.X
+          git push origin release/$MAJOR.$MINOR.X

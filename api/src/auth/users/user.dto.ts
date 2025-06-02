@@ -31,7 +31,7 @@ export class UserSaveDto {
   password: string;
 }
 
-export class UserDto {
+export class BasicUserDto {
   @Expose()
   @IsString()
   @ApiProperty()
@@ -52,7 +52,9 @@ export class UserDto {
   @IsString()
   @ApiProperty()
   username: string;
+}
 
+export class UserDto extends BasicUserDto {
   @Expose()
   @IsArray()
   @IsOptional()
