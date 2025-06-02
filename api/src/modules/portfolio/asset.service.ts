@@ -95,26 +95,46 @@ export class AssetService {
     await this.assetRepository.remove(asset);
   }
 
+  async updateCurrencyAsset(
+    portfolioId: string,
+    assetId: string,
+    asset: SaveCurrencyAssetDto,
+  ) {
+    return this.update(portfolioId, assetId, asset, (params) =>
+      AssetEntity.createCurrencyAsset(params),
+    );
+  }
+
   async updateAsset(portfolioId: string, assetId: string, asset: SaveAssetDto) {
+    return this.update(portfolioId, assetId, asset, (params) =>
+      AssetEntity.createAsset(params),
+    );
+  }
+
+  private async update<T>(
+    portfolioId: string,
+    assetId: string,
+    asset: T,
+    creator: (params: any) => Partial<AssetEntity>,
+  ): Promise<AssetDto> {
     const storedAsset = await this.getAssetById(assetId);
 
     if (storedAsset.portfolio.id !== portfolioId) {
       throw new ForbiddenException('Asset does not belong to this portfolio');
     }
 
-    const assetToUpdate = AssetEntity.createAsset({
+    const assetToUpdate = creator({
       portfolio: storedAsset.portfolio,
       ...asset,
     });
 
-    return Mapper.mapToDto(
-      await this.assetRepository.save({
-        ...storedAsset,
-        ...assetToUpdate,
-        id: storedAsset.id,
-      }),
-      AssetDto,
-    ) as AssetDto;
+    const saved = await this.assetRepository.save({
+      ...storedAsset,
+      ...assetToUpdate,
+      id: storedAsset.id,
+    });
+
+    return Mapper.mapToDto(saved, AssetDto) as AssetDto;
   }
 
   async getAssetById(id: string): Promise<AssetEntity> {

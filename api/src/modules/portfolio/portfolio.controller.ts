@@ -139,4 +139,22 @@ export class PortfolioController {
   ) {
     return this.assetService.updateAsset(portfolioId, assetId, asset);
   }
+
+  @Put(':portfolioId/asset/:assetId/currency')
+  @HttpCode(HttpStatus.OK)
+  @ApiBody({ type: SaveCurrencyAssetDto })
+  @ApiParam({ name: 'portfolioId', type: String, description: 'Portfolio ID' })
+  @ApiParam({
+    name: 'assetId',
+    type: String,
+    description: 'Asset ID to update',
+  })
+  @ApiOkResponse({ type: AssetDto })
+  updateCurrencyAsset(
+    @Param('portfolioId') portfolioId: string,
+    @Param('assetId') assetId: string,
+    @Body() asset: SaveCurrencyAssetDto,
+  ) {
+    return this.assetService.updateCurrencyAsset(portfolioId, assetId, asset);
+  }
 }
