@@ -8,6 +8,7 @@ import { CryptoPriceDto } from 'src/providers/coin-market-cap/dtos/crypto-price.
 import { Market } from '@common/models/market.model';
 import { Asset, Broker } from './models/asset';
 import { AssetEntity } from './db/asset.entity';
+import { Price } from '@common/models/price.model';
 
 @Injectable()
 export class CryptoPortfolioService {
@@ -75,13 +76,14 @@ export class CryptoPortfolioService {
     const portfolioAssets = portfolioAssetsBySymbol[cryptoAsset.symbol];
 
     portfolioAssets.forEach((portfolioAsset) => {
+      const acp = portfolioAsset?.acp ?? new Price(0, currency);
+      const acpValue = acp.value ?? 0;
       const cryptosQuote = cryptosQuoteBySymbol[cryptoAsset.symbol];
       const lastPrice = cryptosQuote?.quote?.usd?.price ?? 0;
-      const acp = portfolioAsset?.acp ?? 0;
       const amount = portfolioAsset?.amount ?? 0;
-      const result = (lastPrice - acp.value) * amount;
+      const result = (lastPrice - acpValue) * amount;
 
-      cryptoAsset.setAcp(acp.value, acp.currency);
+      cryptoAsset.setAcp(acpValue, acp.currency ?? currency);
       cryptoAsset.setLastPrice(lastPrice, currency);
       cryptoAsset.setResult(result, currency, cryptoAsset.brokers[0]?.name);
       cryptoAsset.setUpdateDate(cryptosQuote?.quote?.usd.lastUpdated);

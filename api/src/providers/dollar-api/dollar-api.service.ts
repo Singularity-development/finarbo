@@ -22,4 +22,10 @@ export class DollarApiService {
     const diff = exchange.sell - exchange.buy;
     return exchange.buy + diff / 2;
   }
+
+  async getAvgStockExtExchangeRate() {
+    const exchange = await this.getExchangeRate('contadoconliqui');
+    const diff = exchange.sell - exchange.buy;
+    return exchange.buy + diff / 2;
+  }
 }

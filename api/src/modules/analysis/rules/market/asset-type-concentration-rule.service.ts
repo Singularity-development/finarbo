@@ -53,7 +53,7 @@ export class AssetTypeConcentrationRuleService implements IRule {
         asset
           .map((x) =>
             convertCurrency(
-              x.total.value,
+              x.total.value ?? 0,
               x.total.currency,
               total.currency,
               exchange,

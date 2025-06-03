@@ -10,6 +10,7 @@ import {
   mapToAssetType,
 } from 'src/providers/byma/instrument.util';
 import { AssetEntity } from './db/asset.entity';
+import { Price } from '@common/models/price.model';
 
 @Injectable()
 export class LocalPortfolioService {
@@ -86,16 +87,18 @@ export class LocalPortfolioService {
         return;
       }
 
-      const lastPrice = assetQuote.getLastPrice();
       const currency = assetQuote.denominationCurrency;
-      const acp = portfolioAsset?.acp ?? 0;
+      const acp = portfolioAsset?.acp ?? new Price(0, currency);
+      const acpValue = acp.value ?? 0;
+      const lastPrice = assetQuote.getLastPrice();
+
       const amount = portfolioAsset?.amount ?? 0;
       const result = getNominalValueByType(
-        (lastPrice - acp.value) * amount,
+        (lastPrice - acpValue) * amount,
         mapToAssetType(assetQuote),
       );
 
-      asset.setAcp(acp.value, currency);
+      asset.setAcp(acpValue, currency);
       asset.setLastPrice(lastPrice, currency);
       asset.setResult(result, currency, portfolioAsset.broker);
       asset.setUpdateDate(new Date()); // TODO

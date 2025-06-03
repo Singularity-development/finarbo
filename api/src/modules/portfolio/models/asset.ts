@@ -12,7 +12,7 @@ export class Asset {
   private _market?: Market;
   private _amount: number;
   private _lastPrice?: Price;
-  private _acp: Price;
+  private _acp?: Price;
   private _total: Price;
   private _result?: Price;
   private _percentageResult?: number;
@@ -115,7 +115,9 @@ export class Asset {
 
   setResult(result: number, currency: FiatCurrency, brokerName?: string) {
     this._result = new Price(result, currency);
-    const broker = this.brokers.find((b) => b.name === brokerName);
+    const broker = this.brokers.find(
+      (b) => b.name.toLowerCase() === brokerName?.toLocaleLowerCase(),
+    );
     if (broker) {
       broker.setResult = this._result;
     }
@@ -128,7 +130,7 @@ export class Asset {
 
   getLastPriceValue() {
     if (this._lastPrice && this._lastPrice.value !== 0) {
-      return this._lastPrice.value;
+      return this._lastPrice.value ?? 0;
     }
 
     return this._acp?.value ?? 0;

@@ -10,21 +10,32 @@ import { Request, Response } from 'express';
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const errorResponse = exception.getResponse();
+    const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const code: string =
-      typeof errorResponse === 'object'
-        ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          ((errorResponse as any)?.code ?? undefined)
-        : undefined;
+    const errorResponse = exception.getResponse();
 
-    ctx.getResponse<Response>().status(status).json({
+    let message = exception.message;
+    let code: string | undefined;
+
+    if (typeof errorResponse === 'object' && errorResponse !== null) {
+      const resObj = errorResponse as Record<string, any>;
+
+      code = typeof resObj.code === 'string' ? resObj.code : undefined;
+
+      // Use the 'message' array (e.g. from ValidationPipe)
+      if (Array.isArray(resObj.message)) {
+        message = resObj.message.join(', ');
+      } else if (typeof resObj.message === 'string') {
+        message = resObj.message;
+      }
+    }
+
+    response.status(status).json({
       statusCode: status,
       code,
-      message: exception.message,
+      message,
       timestamp: new Date().toISOString(),
       path: request.url,
     });

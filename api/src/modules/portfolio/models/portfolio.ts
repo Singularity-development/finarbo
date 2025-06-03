@@ -83,15 +83,17 @@ export class Portfolio {
 
       const firstAsset = assets[0];
       const totalAmount = assets.reduce((sum, asset) => sum + asset.amount, 0);
-      const totalResult =
-        assets.reduce(
-          (sum, asset) => sum + (asset.result?.value ?? 0) * asset.amount,
-          0,
-        ) / totalAmount;
-      const acp =
-        assets.reduce((sum, asset) => {
-          return sum + asset.amount * asset.acp.value;
-        }, 0) / totalAmount;
+      const totalResult = assets.some((x) => x.result?.value)
+        ? assets.reduce(
+            (sum, asset) => sum + (asset.result?.value ?? 0) * asset.amount,
+            0,
+          ) / totalAmount
+        : undefined;
+      const acp = assets.some((x) => x.acp?.value)
+        ? assets.reduce((sum, asset) => {
+            return sum + asset.amount * (asset.acp?.value ?? 0);
+          }, 0) / totalAmount
+        : undefined;
       const lastUpdated = new Date(
         Math.max(
           ...assets.map((y) =>
@@ -106,6 +108,9 @@ export class Portfolio {
             ? current
             : latestSoFar;
         }).lastPrice ?? assets.filter((x) => x.lastPrice)[0]?.lastPrice;
+      const result = totalResult
+        ? new Price(totalResult, firstAsset.currency ?? FiatCurrency.USD)
+        : undefined;
 
       const mergedAsset = new Asset(
         symbol,
@@ -115,13 +120,15 @@ export class Portfolio {
         firstAsset.name,
         firstAsset.slug,
         firstAsset.market,
-        new Price(totalResult, firstAsset.currency ?? FiatCurrency.USD),
+        result,
         lastPrice,
         lastUpdated,
         firstAsset.currency,
       );
 
-      mergedAsset.setAcp(acp, firstAsset.currency ?? FiatCurrency.OTHER);
+      if (acp) {
+        mergedAsset.setAcp(acp, firstAsset.currency ?? FiatCurrency.OTHER);
+      }
 
       return mergedAsset;
     });
@@ -153,17 +160,17 @@ export class Portfolio {
         })
         .reduce((a, b) => (a ?? 0) + (b ?? 0)) ?? 0;
 
-    const percentageResult = totalUsd > 0 ? result.value / totalUsd : 0;
+    const percentageResult = totalUsd > 0 ? (result.value ?? 0) / totalUsd : 0;
     const total = new Price(totalUsd, targetCurrency);
 
     this._assets.forEach((x) => {
       x.holding =
         convertCurrency(
-          x.total.value,
+          x.total.value ?? 0,
           x.total.currency,
           total.currency,
           dollarExchange,
-        ) / total.value;
+        ) / (total.value ?? 1);
     });
 
     return { total, result, percentageResult };
@@ -214,7 +221,9 @@ export class Portfolio {
         }) ?? [];
 
     const cryptosTotal = cryptos.length
-      ? cryptos.reduce((a, b) => new Price(a.value + b.value, targetCurrency))
+      ? cryptos.reduce(
+          (a, b) => new Price((a.value ?? 0) + (b.value ?? 0), targetCurrency),
+        )
       : undefined;
 
     const stocks =
@@ -232,7 +241,9 @@ export class Portfolio {
         }) ?? [];
 
     const stocksTotal = stocks.length
-      ? stocks.reduce((a, b) => new Price(a.value + b.value, targetCurrency))
+      ? stocks.reduce(
+          (a, b) => new Price((a.value ?? 0) + (b.value ?? 0), targetCurrency),
+        )
       : undefined;
 
     return new PortfolioMarket(cryptosTotal, stocksTotal);

@@ -26,7 +26,7 @@ export class PublicRiskRuleService implements IRule {
       exposedAssets
         .map((x) =>
           convertCurrency(
-            x.total.value,
+            x.total.value ?? 0,
             x.total.currency,
             total.currency,
             exchange,
@@ -34,7 +34,7 @@ export class PublicRiskRuleService implements IRule {
         )
         .reduce((a, b) => a + b) ?? 0;
 
-    const score = totalExposed / total.value;
+    const score = totalExposed / (total.value ?? 1);
 
     const severity =
       score < maxHoldingPercentage

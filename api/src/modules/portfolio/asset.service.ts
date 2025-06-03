@@ -66,12 +66,14 @@ export class AssetService {
     if (storedAsset) {
       storedAsset.amount += assetToSave.amount;
 
-      // Recalculate the average cost price (ACP)
-      const totalAmount = storedAsset.amount + assetToSave.amount;
-      storedAsset.acp.value =
-        (storedAsset.amount * storedAsset.acp.value +
-          assetToSave.amount * assetToSave.acp.value) /
-        totalAmount;
+      if (storedAsset.acp?.value && assetToSave.acp?.value) {
+        // Recalculate the average cost price (ACP)
+        const totalAmount = storedAsset.amount + assetToSave.amount;
+        storedAsset.acp.value =
+          (storedAsset.amount * storedAsset.acp.value +
+            assetToSave.amount * assetToSave.acp.value) /
+          totalAmount;
+      }
 
       return Mapper.mapToDto(
         await this.assetRepository.save(storedAsset),

@@ -34,7 +34,7 @@ export class ShitCoinRuleService implements IRule {
     // Total invested in crypto
     const totalInvestedInCryptos = cryptos
       .map((x) => x.total.value)
-      .reduce((a, b) => a + b);
+      .reduce((a, b) => (a ?? 0) + (b ?? 0), 0);
 
     // Get shit coins
     const shitCoinPrices = Object.values(cryptosPrices)
@@ -75,7 +75,7 @@ export class ShitCoinRuleService implements IRule {
 
     // Check rule
     const shitCoinHoldingPercentage =
-      totalInvestedInShitCoins / portfolio.total.value;
+      totalInvestedInShitCoins / (portfolio.total.value ?? 1);
 
     const severity =
       shitCoinHoldingPercentage < maxHoldingPercentage

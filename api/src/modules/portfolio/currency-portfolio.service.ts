@@ -16,15 +16,27 @@ export class CurrencyPortfolioService {
       return [];
     }
 
-    const dollarRate = assets.some(
-      (x) => this.mapCurrencies(x) === FiatCurrency.USD,
-    )
-      ? await this.dollarApiService.getAvgStockExchangeRate()
-      : undefined;
+    let dollarRate: number | undefined;
+    let dollarExtRate: number | undefined;
+
+    if (
+      assets.some(
+        (x) =>
+          this.mapCurrencies(x) === FiatCurrency.USD ||
+          this.mapCurrencies(x) === FiatCurrency.EXT,
+      )
+    ) {
+      [dollarRate, dollarExtRate] = await Promise.all([
+        this.dollarApiService.getAvgStockExchangeRate(),
+        this.dollarApiService.getAvgStockExtExchangeRate(),
+      ]);
+    }
 
     // Map assets
     const currencyAssets: Asset[] = await Promise.all(
-      assets.map((asset) => this.mapAsset(asset, { dollarRate })),
+      assets.map((asset) =>
+        this.mapAsset(asset, { dollarRate, dollarExtRate }),
+      ),
     );
 
     return currencyAssets;
@@ -32,7 +44,7 @@ export class CurrencyPortfolioService {
 
   private mapAsset(
     asset: AssetEntity,
-    context: { dollarRate?: number },
+    context: { dollarRate?: number; dollarExtRate?: number },
   ): Asset {
     if (asset.type !== AssetType.CURRENCY) {
       throw new Error(`Asset type ${asset.type} is not a currency.`);
@@ -40,9 +52,8 @@ export class CurrencyPortfolioService {
 
     const broker = asset.broker ?? 'unknown';
     const currency = this.mapCurrencies(asset);
-    const acp = asset.acp;
-    const brokers = [new Broker(broker, asset.amount, acp)];
-    const lastPrice = currency === FiatCurrency.USD ? context.dollarRate : 1;
+    const brokers = [new Broker(broker, asset.amount)];
+    const lastPrice = this.getLastPrice(currency, context);
 
     const currencyAsset = new Asset(
       asset.symbol,
@@ -57,15 +68,6 @@ export class CurrencyPortfolioService {
       undefined,
       FiatCurrency.ARS,
     );
-
-    if (currency !== FiatCurrency.ARS || acp.value > 1) {
-      currencyAsset.setAcp(acp.value, FiatCurrency.ARS);
-
-      if (context.dollarRate) {
-        const result = (context.dollarRate - acp.value) * asset.amount;
-        currencyAsset.setResult(result, FiatCurrency.ARS, broker);
-      }
-    }
 
     return currencyAsset;
   }
@@ -83,6 +85,25 @@ export class CurrencyPortfolioService {
       return FiatCurrency.USD;
     }
 
+    if (asset.symbol === 'EXT') {
+      return FiatCurrency.EXT;
+    }
+
     return FiatCurrency.OTHER;
+  }
+
+  private getLastPrice(
+    currency: FiatCurrency,
+    context: { dollarRate?: number; dollarExtRate?: number },
+  ) {
+    if (currency === FiatCurrency.USD) {
+      return context.dollarRate;
+    }
+
+    if (currency === FiatCurrency.EXT) {
+      return context.dollarExtRate;
+    }
+
+    return 1; // Default price for other currencies
   }
 }

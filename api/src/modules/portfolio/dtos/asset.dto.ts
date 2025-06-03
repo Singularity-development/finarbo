@@ -67,13 +67,6 @@ export class SaveCurrencyAssetDto {
 
   @ApiProperty({ type: String, example: ['BBVA', 'Galicia', 'Santander'] })
   broker?: string;
-
-  @ApiProperty({
-    description: 'Average Cost Price in the currency of the asset',
-  })
-  @IsPositive()
-  @IsOptional()
-  acp?: number;
 }
 
 export class AssetDto {

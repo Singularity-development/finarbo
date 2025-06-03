@@ -27,7 +27,7 @@ export class AssetConcentrationRuleService implements IRule {
       exceedAssets
         .map((x) =>
           convertCurrency(
-            x.total.value,
+            x.total.value ?? 0,
             x.total.currency,
             total.currency,
             exchange,
@@ -37,7 +37,7 @@ export class AssetConcentrationRuleService implements IRule {
 
     const totalExceedAvg = totalExceed / exceedAssets.length;
 
-    const score = totalExceedAvg / total.value;
+    const score = totalExceedAvg / (total.value ?? 1);
 
     const severity =
       exceedAssets.length > 0
@@ -67,7 +67,7 @@ export class AssetConcentrationRuleService implements IRule {
         const { total: totalAsset } = asset;
 
         const totalAssetMapped = convertCurrency(
-          totalAsset.value,
+          totalAsset.value ?? 0,
           totalAsset.currency,
           total.currency,
           exchange,

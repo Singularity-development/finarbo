@@ -11,7 +11,6 @@ import { Market } from '@common/models/market.model';
 import { Price } from '@common/models/price.model';
 import { FiatCurrency } from '@common/models/fiat-currency.model';
 import { PortfolioEntity } from './portfolio.entity';
-import { getNominalValueByType } from 'src/providers/byma/instrument.util';
 
 @Entity('assets')
 @Unique(['symbol', 'portfolio', 'broker', 'market'])
@@ -29,10 +28,7 @@ export class AssetEntity {
   amount: number;
 
   @Column(() => Price, { prefix: 'acp' })
-  acp: Price;
-
-  @Column(() => Price, { prefix: 'total' })
-  total: Price;
+  acp?: Price;
 
   @Column({ nullable: true })
   broker?: string;
@@ -80,7 +76,6 @@ export class AssetEntity {
       fiatCurrency,
     );
 
-    asset.total = new Price(params.amount, fiatCurrency);
     return asset;
   }
 
@@ -103,9 +98,6 @@ export class AssetEntity {
 
     asset.amount = params.amount;
     asset.acp = params.acp;
-
-    const nominalPrice = getNominalValueByType(params.acp.value, asset.type);
-    asset.total = new Price(params.amount * nominalPrice, params.acp.currency);
     return asset;
   }
 }

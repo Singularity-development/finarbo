@@ -45,9 +45,10 @@ export class AlternativeCryptoRuleService implements IRule {
     });
 
     // Total invested in crypto
-    const totalInvestedInCryptos = allCryptos
-      .map((x) => x.total.value)
-      .reduce((a, b) => a + b);
+    const totalInvestedInCryptos: number =
+      allCryptos
+        .map((x) => x.total.value)
+        .reduce((a, b) => (a ?? 0) + (b ?? 0), 0) ?? 0;
 
     // Get main crypto investment
     const quote = cryptosPrices[mainSymbol].quote;
@@ -56,7 +57,8 @@ export class AlternativeCryptoRuleService implements IRule {
 
     // Check rule
     const altCoinHoldingPercentage =
-      (totalInvestedInCryptos - mainCryptoInvestment) / portfolio.total.value;
+      (totalInvestedInCryptos - mainCryptoInvestment) /
+      (portfolio.total.value ?? 1);
 
     const severity =
       altCoinHoldingPercentage < maxHoldingPercentage
